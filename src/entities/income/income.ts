@@ -1,5 +1,6 @@
 interface IncomeProps {
 	id: string
+	name: string
 	month: string
 	amount: number
 }
@@ -7,6 +8,9 @@ interface IncomeProps {
 export class Income {
 	private props: IncomeProps
 
+	get name() {
+		return this.props.name
+	}
 	get id() {
 		return this.props.id
 	}
@@ -19,7 +23,18 @@ export class Income {
 		return this.props.amount
 	}
 
+	set name(name: string) {
+		this.props.name = name
+	}
+
+	set amount(amount: number) {
+		this.props.amount = amount
+	}
+
 	constructor(props: IncomeProps) {
+		if (!props.name) {
+			throw new Error('Income name cannot be blank')
+		}
 		if (!props.month) {
 			throw new Error('Income month cannot be blank')
 		}

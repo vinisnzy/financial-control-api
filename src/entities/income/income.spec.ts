@@ -6,6 +6,7 @@ describe('Income entity', () => {
 	it('should be create an income', () => {
 		const income = new Income({
 			id: randomUUID().toString(),
+			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
 		})
@@ -15,10 +16,22 @@ describe('Income entity', () => {
 		expect(income.amount).toEqual(2000.0)
 	})
 
+	it('should not be able to create a income with name blank', () => {
+		expect(() => {
+			return new Income({
+				id: randomUUID().toString(),
+				name: '',
+				month: '2026-02',
+				amount: 2000.0,
+			})
+		}).toThrow()
+	})
+
 	it('should not be able to create a income with month blank', () => {
 		expect(() => {
 			return new Income({
 				id: randomUUID().toString(),
+				name: 'Salary',
 				month: '',
 				amount: 2000.0,
 			})
@@ -29,6 +42,7 @@ describe('Income entity', () => {
 		expect(() => {
 			return new Income({
 				id: randomUUID().toString(),
+				name: 'Salary',
 				month: '2026-02',
 				amount: -2000.0,
 			})
@@ -39,6 +53,7 @@ describe('Income entity', () => {
 		expect(() => {
 			return new Income({
 				id: randomUUID().toString(),
+				name: 'Salary',
 				month: '2026-02',
 				amount: 0,
 			})
