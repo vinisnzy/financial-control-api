@@ -24,10 +24,16 @@ export class Income {
 	}
 
 	set name(name: string) {
+		if (!name) {
+			throw new Error('Income name cannot be blank')
+		}
 		this.props.name = name
 	}
 
 	set amount(amount: number) {
+		if (amount <= 0) {
+			throw new Error('Income amount cannot be negative or zero')
+		}
 		this.props.amount = amount
 	}
 

@@ -59,4 +59,43 @@ describe('Income entity', () => {
 			})
 		}).toThrow()
 	})
+
+	it('should not be able to set a blank name to income', () => {
+		const income = new Income({
+			id: randomUUID().toString(),
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
+
+		expect(() => {
+			income.name = ''
+		}).toThrow()
+	})
+
+	it('should not be able to set a negative amount to income', () => {
+		const income = new Income({
+			id: randomUUID().toString(),
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
+
+		expect(() => {
+			income.amount = -2000.0
+		}).toThrow()
+	})
+
+	it('should not be able to set a amount equals to zero to income', () => {
+		const income = new Income({
+			id: randomUUID().toString(),
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
+
+		expect(() => {
+			income.amount = 0
+		}).toThrow()
+	})
 })
