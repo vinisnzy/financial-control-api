@@ -23,7 +23,7 @@ export class InMemoryVariableExpenseRepository implements VariableExpenseReposit
 	async save(expense: VariableExpense): Promise<void> {
 		const index = this.expenses.findIndex((e) => e.id === expense.id)
 		if (index === -1) {
-			throw new Error(`Income not found with id: ${expense.id}`)
+			throw new Error(`Expense not found with id: ${expense.id}`)
 		}
 
 		this.expenses[index] = expense
