@@ -3,7 +3,7 @@ import type { Income } from '@/entities/income/income.js'
 export interface IncomeRepository {
 	findAll(): Promise<Income[]>
 	findById(id: string): Promise<Income | null>
-	findByName(name: string): Promise<Income | null>
+	findByNameAndMonth(name: string, month: string): Promise<Income | null>
 	findByMonth(month: string): Promise<Income[]>
 
 	save(income: Income): Promise<void>

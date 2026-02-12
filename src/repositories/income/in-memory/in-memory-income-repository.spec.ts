@@ -95,18 +95,18 @@ describe('In memory income repository', () => {
 		expect(response).toBeNull()
 	})
 
-
 	it('should not be find income by name when there are no incomes', async () => {
 		const repository = new InMemoryIncomeRepository()
 
 		const name = 'Salary'
+		const month = '2026-02'
 
-		const response = await repository.findByName(name)
+		const response = await repository.findByNameAndMonth(name, month)
 
 		expect(response).toBeNull()
 	})
 
-	it('should not be find income by name when current incomes does not have the corresponding name', async () => {
+	it('should not be find income by name and month when current incomes does not have the corresponding name', async () => {
 		const repository = new InMemoryIncomeRepository()
 
 		await repository.create(
@@ -120,12 +120,31 @@ describe('In memory income repository', () => {
 
 		const otherName = 'Bônus'
 
-		const response = await repository.findByName(otherName)
+		const response = await repository.findByNameAndMonth(otherName, '2026-02')
 
 		expect(response).toBeNull()
 	})
 
-	it('should be find income by name', async () => {
+	it('should not be find income by name and month when current incomes does not have the corresponding month', async () => {
+		const repository = new InMemoryIncomeRepository()
+
+		await repository.create(
+			new Income({
+				id: randomUUID().toString(),
+				name: 'Salary',
+				month: '2026-02',
+				amount: 2000.0,
+			}),
+		)
+
+		const otherMonth = '2026-03'
+
+		const response = await repository.findByNameAndMonth('Salary', otherMonth)
+
+		expect(response).toBeNull()
+	})
+
+	it('should be find income by name and month', async () => {
 		const repository = new InMemoryIncomeRepository()
 
 		const id = randomUUID().toString()
@@ -142,7 +161,7 @@ describe('In memory income repository', () => {
 			}),
 		)
 
-		const response = await repository.findByName(name)
+		const response = await repository.findByNameAndMonth(name, month)
 
 		expect(response).not.toBeNullable()
 
