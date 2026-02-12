@@ -12,6 +12,10 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 		return this.incomes.find((i) => i.id === id) ?? null
 	}
 
+	async findByName(name: string): Promise<Income | null> {
+		return this.incomes.find((i) => i.name === name) ?? null
+	}
+
 	async findByMonth(month: string): Promise<Income[]> {
 		return this.incomes.filter((i) => i.month === month)
 	}
