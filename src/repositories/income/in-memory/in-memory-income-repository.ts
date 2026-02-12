@@ -37,4 +37,3 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 		this.incomes = this.incomes.filter((i) => i.id !== id)
 	}
 }
-2
