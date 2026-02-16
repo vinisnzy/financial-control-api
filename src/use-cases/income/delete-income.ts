@@ -4,6 +4,6 @@ export class DeleteIncomeUseCase {
 	constructor(private repository: IncomeRepository) {}
 
 	async execute(id: string): Promise<void> {
-		await this.repository.delete(id)
+		this.repository.delete(id)
 	}
 }

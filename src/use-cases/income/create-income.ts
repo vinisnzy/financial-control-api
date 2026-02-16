@@ -17,7 +17,7 @@ export class CreateIncomeUseCase {
 		if (alreadyExists) {
 			throw new Error(`There is already a recipe with the name: ${name}, and the month: ${month}`)
 		}
-		await this.repository.create(
+		this.repository.create(
 			new Income({
 				id: randomUUID().toString(),
 				...request,

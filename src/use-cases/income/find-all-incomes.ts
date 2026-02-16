@@ -7,6 +7,6 @@ export class FindAllIncomesUseCase {
 	constructor(private repository: IncomeRepository) {}
 
 	async execute(): Promise<FindAllIncomesResponse> {
-		return await this.repository.findAll()
+		return this.repository.findAll()
 	}
 }

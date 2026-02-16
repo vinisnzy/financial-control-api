@@ -7,6 +7,6 @@ export class FindIncomesByMonthUseCase {
 	constructor(private repository: IncomeRepository) {}
 
 	async execute(month: string): Promise<FindIncomesByMonthResponse> {
-		return await this.repository.findByMonth(month)
+		return this.repository.findByMonth(month)
 	}
 }

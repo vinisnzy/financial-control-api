@@ -17,6 +17,6 @@ export class UpdateIncomeUseCase {
 		if (alreadyExists) {
 			throw new Error(`There is already a recipe with the name: ${name}, and the month: ${month}`)
 		}
-		await this.repository.save(new Income({ ...request }))
+		this.repository.save(new Income({ ...request }))
 	}
 }
