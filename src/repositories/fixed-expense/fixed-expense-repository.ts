@@ -4,6 +4,7 @@ import type { ExpenseCategory } from '@/enums/expense-category.js'
 export interface FixedExpenseRepository {
 	findAll(): Promise<FixedExpense[]>
 	findById(id: string): Promise<FixedExpense | null>
+	findByNameAndMonth(name: string, month: string): Promise<FixedExpense | null>
 	findByMonth(month: string): Promise<FixedExpense[]>
 	findByCategory(category: ExpenseCategory): Promise<FixedExpense[]>
 	findAllNecessary(): Promise<FixedExpense[]>

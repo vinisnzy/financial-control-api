@@ -11,6 +11,11 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 	async findById(id: string): Promise<FixedExpense | null> {
 		return this.expenses.find((e) => e.id === id) ?? null
 	}
+
+	async findByNameAndMonth(name: string, month: string): Promise<FixedExpense | null> {
+		return this.expenses.find((e) => e.name === name && e.month === month) ?? null
+	}
+
 	async findByMonth(month: string): Promise<FixedExpense[]> {
 		return this.expenses.filter((e) => e.month === month)
 	}

@@ -109,6 +109,87 @@ describe('In memory fixed expense repository', () => {
 		expect(response).toBeNull()
 	})
 
+	it('should find expense by name and month', async () => {
+		const repository = new InMemoryFixedExpenseRepository()
+
+		const id = randomUUID().toString()
+		const name = 'Supermarket'
+		const month = '2026-02'
+		const amount = 300.0
+		const category = ExpenseCategory.FOOD
+		const necessary = true
+
+		await repository.create(
+			new FixedExpense({
+				id,
+				name,
+				month,
+				amount,
+				category,
+				necessary,
+			}),
+		)
+
+		const response = await repository.findByNameAndMonth(name, month)
+
+		expect(response).not.toBeNull()
+
+		if (!response) throw new Error('Expense not found in test')
+
+		expect(response.id).toEqual(id)
+		expect(response.name).toEqual(name)
+		expect(response.month).toEqual(month)
+		expect(response.amount).toEqual(amount)
+		expect(response.category).toEqual(category)
+		expect(response.necessary).toEqual(necessary)
+	})
+
+	it('should return null when current expenses does not have the corresponding name', async () => {
+		const repository = new InMemoryFixedExpenseRepository()
+
+		const month = '2026-02'
+
+		await repository.create(
+			new FixedExpense({
+				id: randomUUID().toString(),
+				name: 'Supermarket',
+				month,
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+			}),
+		)
+
+		const otherName = 'Restaurant'
+
+		const response = await repository.findByNameAndMonth(otherName, month)
+
+		expect(response).toBeNull()
+	})
+
+	it('should return null when current expenses does not have the corresponding month', async () => {
+		const repository = new InMemoryFixedExpenseRepository()
+
+		const name = 'Supermarket'
+
+		await repository.create(
+			new FixedExpense({
+				id: randomUUID().toString(),
+				name,
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+			}),
+		)
+
+		const otherMonth = '2026-03'
+
+		const response = await repository.findByNameAndMonth(name, otherMonth)
+
+		expect(response).toBeNull()
+	})
+
 	it('should return an empty list when find expenses by month and there are no expenses', async () => {
 		const repository = new InMemoryFixedExpenseRepository()
 		const expenses = await repository.findByMonth('2026-02')
