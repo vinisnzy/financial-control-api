@@ -1,12 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { Income } from '@/entities/income/income.js'
 import type { IncomeRepository } from '@/repositories/income/income-repository.js'
-
-interface CreateIncomeRequest {
-	name: string
-	month: string
-	amount: number
-}
+import type { CreateIncomeRequest } from '@/schemas/income/create-income.schema.js'
 
 export class CreateIncomeUseCase {
 	constructor(private repository: IncomeRepository) {}

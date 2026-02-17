@@ -1,14 +1,6 @@
 import { FixedExpense } from '@/entities/fixed-expense/fixed-expense.js'
-import type { ExpenseCategory } from '@/enums/expense-category.js'
 import type { FixedExpenseRepository } from '@/repositories/fixed-expense/fixed-expense-repository.js'
-
-interface UpdateFixedExpenseRequest {
-	month: string
-	name: string
-	amount: number
-	category: ExpenseCategory
-	necessary: boolean
-}
+import type { UpdateFixedExpenseRequest } from '@/schemas/fixed-expense/update-fixed-expense.schema.js'
 
 export class UpdateFixedExpenseUseCase {
 	constructor(private repository: FixedExpenseRepository) {}

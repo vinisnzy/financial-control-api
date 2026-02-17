@@ -1,15 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { FixedExpense } from '@/entities/fixed-expense/fixed-expense.js'
-import type { ExpenseCategory } from '@/enums/expense-category.js'
 import type { FixedExpenseRepository } from '@/repositories/fixed-expense/fixed-expense-repository.js'
-
-interface CreateFixedExpenseRequest {
-	month: string
-	name: string
-	amount: number
-	category: ExpenseCategory
-	necessary: boolean
-}
+import type { CreateFixedExpenseRequest } from '@/schemas/fixed-expense/create-fixed-expense.schema.js'
 
 export class CreateFixedExpenseUseCase {
 	constructor(private repository: FixedExpenseRepository) {}

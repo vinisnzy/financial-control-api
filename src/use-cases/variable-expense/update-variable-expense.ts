@@ -1,15 +1,6 @@
 import { VariableExpense } from '@/entities/variable-expense/variable-expense.js'
-import type { ExpenseCategory } from '@/enums/expense-category.js'
 import type { VariableExpenseRepository } from '@/repositories/variable-expense/variable-expense.js'
-
-interface UpdateVariableExpenseRequest {
-	month: string
-	name: string
-	amount: number
-	category: ExpenseCategory
-	necessary: boolean
-	date: string
-}
+import type { UpdateVariableExpenseRequest } from '@/schemas/variable-expense/update-variable-expense.schema.js'
 
 export class UpdateVariableExpenseUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
