@@ -1,12 +1,12 @@
 import type { Income } from '@/entities/income/income.js'
 import type { IncomeRepository } from '@/repositories/income/income-repository.js'
 
-type findIncomeByNameAndMonthResponse = Income
+type FindIncomeByNameAndMonthResponse = Income
 
-export class findIncomeByNameAndMonthUseCase {
+export class FindIncomeByNameAndMonthUseCase {
 	constructor(private repository: IncomeRepository) {}
 
-	async execute(name: string, month: string): Promise<findIncomeByNameAndMonthResponse | null> {
+	async execute(name: string, month: string): Promise<FindIncomeByNameAndMonthResponse | null> {
 		return this.repository.findByNameAndMonth(name, month)
 	}
 }
