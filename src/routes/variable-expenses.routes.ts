@@ -9,37 +9,19 @@ import { findVariableExpensesByCategoryController } from '@/controllers/variable
 import { findVariableExpensesByCategoryAndMonthController } from '@/controllers/variable-expense/find-variable-expenses-by-category-and-month.controller.js'
 import { findVariableExpensesByMonthController } from '@/controllers/variable-expense/find-variable-expenses-by-month.controller.js'
 import { updateVariableExpenseController } from '@/controllers/variable-expense/update-variable-expense.controller.js'
-import { categoryAndMonthParamsSchema } from '@/schemas/shared/category-and-month-params.schema.js'
-import { categoryParamSchema } from '@/schemas/shared/category-param.schema.js'
-import { idParamSchema } from '@/schemas/shared/id-param.schema.js'
-import { monthParamSchema } from '@/schemas/shared/month-param.schema.js'
-import { createVariableExpenseSchema } from '@/schemas/variable-expense/create-variable-expense.schema.js'
-import { updateVariableExpenseSchema } from '@/schemas/variable-expense/update-variable-expense.schema.js'
 
 export async function variableExpensesRoutes(app: FastifyInstance) {
-	app.post('/', { schema: { body: { createVariableExpenseSchema } } }, createVariableExpenseController)
+	app.post('/', createVariableExpenseController)
 
 	app.get('/', findAllVariableExpensesController)
 	app.get('/necessary', findAllNecessaryVariableExpensesController)
-	app.get(
-		'/necessary/month/:month',
-		{ schema: { params: monthParamSchema } },
-		findNecessaryVariableExpensesByMonthController,
-	)
-	app.get('/:id', { schema: { params: idParamSchema } }, findVariableExpenseByIdController)
-	app.get('/month/:month', { schema: { params: monthParamSchema } }, findVariableExpensesByMonthController)
-	app.get('/category/:category', { schema: { params: categoryParamSchema } }, findVariableExpensesByCategoryController)
-	app.get(
-		'/category/:category/month/:month',
-		{ schema: { params: categoryAndMonthParamsSchema } },
-		findVariableExpensesByCategoryAndMonthController,
-	)
+	app.get('/necessary/month/:month', findNecessaryVariableExpensesByMonthController)
+	app.get('/:id', findVariableExpenseByIdController)
+	app.get('/month/:month', findVariableExpensesByMonthController)
+	app.get('/category/:category', findVariableExpensesByCategoryController)
+	app.get('/category/:category/month/:month', findVariableExpensesByCategoryAndMonthController)
 
-	app.put(
-		'/:id',
-		{ schema: { params: idParamSchema, body: updateVariableExpenseSchema } },
-		updateVariableExpenseController,
-	)
+	app.put('/:id', updateVariableExpenseController)
 
-	app.delete('/:id', { schema: { params: idParamSchema } }, deleteVariableExpenseController)
+	app.delete('/:id', deleteVariableExpenseController)
 }
