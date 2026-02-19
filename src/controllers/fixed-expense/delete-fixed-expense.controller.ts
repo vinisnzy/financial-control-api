@@ -1,11 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from '@/container.js'
+import type { idParamRequest } from '@/schemas/shared/id-param.schema.js'
 import { DeleteFixedExpenseUseCase } from '@/use-cases/fixed-expense/delete-fixed-expense.js'
 
 type RequestType = {
-	Params: {
-		id: string
-	}
+	Params: idParamRequest
 }
 
 export async function deleteFixedExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {

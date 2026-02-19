@@ -1,12 +1,11 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from '@/container.js'
 import type { UpdateFixedExpenseRequest } from '@/schemas/fixed-expense/update-fixed-expense.schema.js'
+import type { idParamRequest } from '@/schemas/shared/id-param.schema.js'
 import { UpdateFixedExpenseUseCase } from '@/use-cases/fixed-expense/update-fixed-expense.js'
 
 type RequestType = {
-	Params: {
-		id: string
-	}
+	Params: idParamRequest
 	Body: UpdateFixedExpenseRequest
 }
 

@@ -7,7 +7,7 @@ type RequestType = {
 	Body: CreateVariableExpenseRequest
 }
 
-export async function CreateVariableExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+export async function createVariableExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
 	const useCase = new CreateVariableExpenseUseCase(container.variableExpenseRepository)
 	await useCase.execute(request.body)
 	reply.status(201).send()

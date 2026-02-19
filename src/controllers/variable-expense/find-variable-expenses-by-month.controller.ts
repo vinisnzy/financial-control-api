@@ -1,11 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from '@/container.js'
+import type { monthParamRequest } from '@/schemas/shared/month-param.schema.js'
 import { FindVariableExpensesByMonthUseCase } from '@/use-cases/variable-expense/find-variable-expenses-by-month.js'
 
 type RequestType = {
-	Params: {
-		month: string
-	}
+	Params: monthParamRequest
 }
 
 export async function findVariableExpensesByMonthController(request: FastifyRequest<RequestType>, reply: FastifyReply) {

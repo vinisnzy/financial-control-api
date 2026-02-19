@@ -1,11 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from '@/container.js'
+import type { idParamRequest } from '@/schemas/shared/id-param.schema.js'
 import { FindIncomeByIdUseCase } from '@/use-cases/income/find-income-by-id.js'
 
 type RequestType = {
-	Params: {
-		id: string
-	}
+	Params: idParamRequest
 }
 
 export async function findIncomeByIdController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
