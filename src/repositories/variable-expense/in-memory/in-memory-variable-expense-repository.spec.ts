@@ -228,6 +228,128 @@ describe('In memory variable expense repository', () => {
 		expect(expenses[0]).toEqual(expense1)
 	})
 
+	it('should list necessary expenses by month', async () => {
+		const repository = new InMemoryVariableExpenseRepository()
+
+		const expense1 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket',
+			month: '2026-02',
+			amount: 300.0,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: '2026-02-10',
+		})
+		const expense2 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Cinema',
+			month: '2026-02',
+			amount: 50.0,
+			category: ExpenseCategory.LEISURE,
+			necessary: false,
+			date: '2026-02-11',
+		})
+		const expense3 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket January',
+			month: '2026-01',
+			amount: 250.0,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: '2026-01-10',
+		})
+
+		await repository.create(expense1)
+		await repository.create(expense2)
+		await repository.create(expense3)
+
+		const expenses = await repository.findNecessaryByMonth('2026-02')
+
+		expect(expenses.every((e) => e.necessary && e.month === '2026-02')).toBe(true)
+		expect(expenses).toHaveLength(1)
+		expect(expenses[0]).toEqual(expense1)
+	})
+
+	it('should return an empty list when no necessary expenses for the month', async () => {
+		const repository = new InMemoryVariableExpenseRepository()
+
+		const expense1 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket',
+			month: '2026-02',
+			amount: 300.0,
+			category: ExpenseCategory.FOOD,
+			necessary: false,
+			date: '2026-02-10',
+		})
+		await repository.create(expense1)
+
+		const expenses = await repository.findNecessaryByMonth('2026-02')
+		expect(expenses).toHaveLength(0)
+		expect(expenses).toEqual([])
+	})
+
+	it('should list expenses by category and month', async () => {
+		const repository = new InMemoryVariableExpenseRepository()
+
+		const expense1 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket',
+			month: '2026-02',
+			amount: 300.0,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: '2026-02-10',
+		})
+		const expense2 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Cinema',
+			month: '2026-02',
+			amount: 50.0,
+			category: ExpenseCategory.LEISURE,
+			necessary: false,
+			date: '2026-02-11',
+		})
+		const expense3 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket January',
+			month: '2026-01',
+			amount: 250.0,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: '2026-01-10',
+		})
+
+		await repository.create(expense1)
+		await repository.create(expense2)
+		await repository.create(expense3)
+
+		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.FOOD, '2026-02')
+
+		expect(expenses.every((e) => e.category === ExpenseCategory.FOOD && e.month === '2026-02')).toBe(true)
+		expect(expenses).toHaveLength(1)
+		expect(expenses[0]).toEqual(expense1)
+	})
+
+	it('should return an empty list when no expenses for category and month', async () => {
+		const repository = new InMemoryVariableExpenseRepository()
+
+		const expense1 = new VariableExpense({
+			id: randomUUID().toString(),
+			name: 'Supermarket',
+			month: '2026-02',
+			amount: 300.0,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: '2026-02-10',
+		})
+		await repository.create(expense1)
+
+		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.LEISURE, '2026-01')
+		expect(expenses).toHaveLength(0)
+		expect(expenses).toEqual([])
+	})
+
 	it('should update an existing expense', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
 

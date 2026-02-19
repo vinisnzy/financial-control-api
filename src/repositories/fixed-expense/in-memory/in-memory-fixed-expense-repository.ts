@@ -22,8 +22,14 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 	async findByCategory(category: ExpenseCategory): Promise<FixedExpense[]> {
 		return this.expenses.filter((e) => e.category === category)
 	}
+	async findByCategoryAndMonth(category: ExpenseCategory, month: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.month === month && e.category === category)
+	}
 	async findAllNecessary(): Promise<FixedExpense[]> {
 		return this.expenses.filter((e) => e.necessary)
+	}
+	async findNecessaryByMonth(month: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.necessary && e.month === month)
 	}
 	async save(expense: FixedExpense): Promise<void> {
 		const index = this.expenses.findIndex((e) => e.id === expense.id)

@@ -17,8 +17,14 @@ export class InMemoryVariableExpenseRepository implements VariableExpenseReposit
 	async findByCategory(category: ExpenseCategory): Promise<VariableExpense[]> {
 		return this.expenses.filter((e) => e.category === category)
 	}
+	async findByCategoryAndMonth(category: ExpenseCategory, month: string): Promise<VariableExpense[]> {
+		return this.expenses.filter((e) => e.category === category && e.month === month)
+	}
 	async findAllNecessary(): Promise<VariableExpense[]> {
 		return this.expenses.filter((e) => e.necessary)
+	}
+	async findNecessaryByMonth(month: string): Promise<VariableExpense[]> {
+		return this.expenses.filter((e) => e.necessary && e.month === month)
 	}
 	async save(expense: VariableExpense): Promise<void> {
 		const index = this.expenses.findIndex((e) => e.id === expense.id)
