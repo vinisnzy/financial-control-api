@@ -19,8 +19,7 @@ describe('Update income use case', () => {
 
 		if (!income) throw new Error('Income not found in test')
 
-		await updateIncome.execute({
-			id: income.id,
+		await updateIncome.execute(income.id, {
 			name: 'Salary Updated',
 			month: '2026-02',
 			amount: 2500.0,
@@ -55,8 +54,7 @@ describe('Update income use case', () => {
 		if (!bonus) throw new Error('Income not found in test')
 
 		await expect(
-			updateIncome.execute({
-				id: bonus.id,
+			updateIncome.execute(bonus.id, {
 				name: 'Salary',
 				month: '2026-02',
 				amount: 600.0,
@@ -79,8 +77,7 @@ describe('Update income use case', () => {
 
 		if (!income) throw new Error('Income not found in test')
 
-		await updateIncome.execute({
-			id: income.id,
+		await updateIncome.execute(income.id, {
 			name: 'Salary',
 			month: '2026-03',
 			amount: 2100.0,
