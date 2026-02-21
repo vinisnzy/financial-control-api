@@ -6,7 +6,7 @@ type FindFixedExpensesByMonthResponse = FixedExpense[]
 export class FindFixedExpensesByMonthUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
-	async execute(month: string): Promise<FindFixedExpensesByMonthResponse | null> {
+	async execute(month: string): Promise<FindFixedExpensesByMonthResponse> {
 		return this.repository.findByMonth(month)
 	}
 }

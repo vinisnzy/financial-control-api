@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { FixedExpense } from '@/entities/fixed-expense/fixed-expense.js'
+import { BadRequestError } from '@/errors/bad-request-error.js'
 import type { FixedExpenseRepository } from '@/repositories/fixed-expense/fixed-expense-repository.js'
 import type { CreateFixedExpenseRequest } from '@/schemas/fixed-expense/create-fixed-expense.schema.js'
 
@@ -9,7 +10,7 @@ export class CreateFixedExpenseUseCase {
 	async execute(request: CreateFixedExpenseRequest): Promise<void> {
 		const { name, month } = request
 		if (await this.repository.findByNameAndMonth(name, month)) {
-			throw new Error(`Alreary exists an fixed expense with name: ${name} and month: ${month}`)
+			throw new BadRequestError(`Alreary exists an fixed expense with name: ${name} and month: ${month}`)
 		}
 		this.repository.create(
 			new FixedExpense({

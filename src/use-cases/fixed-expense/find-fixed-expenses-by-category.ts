@@ -7,7 +7,7 @@ type FindFixedExpensesByCategoryResponse = FixedExpense[]
 export class FindFixedExpensesByCategoryUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
-	async execute(category: ExpenseCategory): Promise<FindFixedExpensesByCategoryResponse | null> {
+	async execute(category: ExpenseCategory): Promise<FindFixedExpensesByCategoryResponse> {
 		return this.repository.findByCategory(category)
 	}
 }

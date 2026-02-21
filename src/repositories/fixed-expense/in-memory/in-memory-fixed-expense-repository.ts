@@ -1,5 +1,6 @@
 import type { FixedExpense } from '@/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/enums/expense-category.js'
+import { ResourceNotFoundError } from '@/errors/resource-not-found-error.js'
 import type { FixedExpenseRepository } from '../fixed-expense-repository.js'
 
 export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
@@ -34,7 +35,7 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 	async save(expense: FixedExpense): Promise<void> {
 		const index = this.expenses.findIndex((e) => e.id === expense.id)
 		if (index === -1) {
-			throw new Error(`Expense not found with id: ${expense.id}`)
+			throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
 		}
 
 		this.expenses[index] = expense

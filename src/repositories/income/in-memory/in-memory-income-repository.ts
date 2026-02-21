@@ -1,4 +1,5 @@
 import type { Income } from '@/entities/income/income.js'
+import { ResourceNotFoundError } from '@/errors/resource-not-found-error.js'
 import type { IncomeRepository } from '../income-repository.js'
 
 export class InMemoryIncomeRepository implements IncomeRepository {
@@ -23,7 +24,7 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 	async save(income: Income): Promise<void> {
 		const index = this.incomes.findIndex((i) => i.id === income.id)
 		if (index === -1) {
-			throw new Error(`Income not found with id: ${income.id}`)
+			throw new ResourceNotFoundError(`Income not found with id: ${income.id}`)
 		}
 
 		this.incomes[index] = income

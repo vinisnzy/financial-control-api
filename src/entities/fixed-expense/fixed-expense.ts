@@ -1,4 +1,5 @@
 import type { ExpenseCategory } from '@/enums/expense-category.js'
+import { BadRequestError } from '@/errors/bad-request-error.js'
 
 interface FixedExpenseProps {
 	id: string
@@ -14,13 +15,13 @@ export class FixedExpense {
 
 	constructor(props: FixedExpenseProps) {
 		if (!props.name) {
-			throw new Error('Expense name cannot be blank')
+			throw new BadRequestError('Expense name cannot be blank')
 		}
 		if (!props.month) {
-			throw new Error('Expense month cannot be blank')
+			throw new BadRequestError('Expense month cannot be blank')
 		}
 		if (props.amount <= 0) {
-			throw new Error('Expense amount cannot be negative or zero')
+			throw new BadRequestError('Expense amount cannot be negative or zero')
 		}
 		this.props = props
 	}
