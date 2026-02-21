@@ -1,3 +1,5 @@
+import { BadRequestError } from '@/errors/bad-request-error.js'
+
 interface IncomeProps {
 	id: string
 	name: string
@@ -25,27 +27,27 @@ export class Income {
 
 	set name(name: string) {
 		if (!name) {
-			throw new Error('Income name cannot be blank')
+			throw new BadRequestError('Income name cannot be blank')
 		}
 		this.props.name = name
 	}
 
 	set amount(amount: number) {
 		if (amount <= 0) {
-			throw new Error('Income amount cannot be negative or zero')
+			throw new BadRequestError('Income amount cannot be negative or zero')
 		}
 		this.props.amount = amount
 	}
 
 	constructor(props: IncomeProps) {
 		if (!props.name) {
-			throw new Error('Income name cannot be blank')
+			throw new BadRequestError('Income name cannot be blank')
 		}
 		if (!props.month) {
-			throw new Error('Income month cannot be blank')
+			throw new BadRequestError('Income month cannot be blank')
 		}
 		if (props.amount <= 0) {
-			throw new Error('Income amount cannot be negative or zero')
+			throw new BadRequestError('Income amount cannot be negative or zero')
 		}
 		this.props = props
 	}
