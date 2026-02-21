@@ -8,7 +8,7 @@ type RequestType = {
 	Params: categoryParamRequest
 }
 
-export async function findFixedExpensesByCategory(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+export async function findFixedExpensesByCategoryController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
 	const useCase = new FindFixedExpensesByCategoryUseCase(container.fixedExpenseRepository)
 	const expenses = await useCase.execute(request.params.category)
 	reply.send(expenses.map((e) => FixedExpenseMapper.toResponse(e)))

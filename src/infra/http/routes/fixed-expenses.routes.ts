@@ -8,7 +8,7 @@ import { findFixedExpensesByCategoryAndMonthController } from '@/infra/http/cont
 import { findFixedExpensesByMonthController } from '@/infra/http/controllers/fixed-expense/find-fixed-expenses-by-month.controller.js'
 import { findNecessaryFixedExpensesByMonthController } from '@/infra/http/controllers/fixed-expense/find-necessary-fixed-expenses-by-month.controller.js'
 import { updateFixedExpenseController } from '@/infra/http/controllers/fixed-expense/update-fixed-expense.controller.js'
-import { findVariableExpensesByCategoryController } from '@/infra/http/controllers/variable-expense/find-variable-expenses-by-category.controller.js'
+import { findFixedExpensesByCategoryController } from '../controllers/fixed-expense/find-fixed-expenses-by-category.controller.js'
 
 export async function fixedExpensesRoutes(app: FastifyInstance) {
 	app.post('/', createFixedExpenseController)
@@ -18,7 +18,7 @@ export async function fixedExpensesRoutes(app: FastifyInstance) {
 	app.get('/necessary/month/:month', findNecessaryFixedExpensesByMonthController)
 	app.get('/:id', findFixedExpenseByIdController)
 	app.get('/month/:month', findFixedExpensesByMonthController)
-	app.get('/category/:category', findVariableExpensesByCategoryController)
+	app.get('/category/:category', findFixedExpensesByCategoryController)
 	app.get('/category/:category/month/:month', findFixedExpensesByCategoryAndMonthController)
 
 	app.put('/:id', updateFixedExpenseController)
