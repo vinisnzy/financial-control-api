@@ -1,5 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { container } from '@/container.js'
+import { FixedExpenseMapper } from '@/mappers/fixed-expense.mapper.js'
 import type { monthParamRequest } from '@/schemas/shared/month-param.schema.js'
 import { FindNecessaryFixedExpensesByMonthUseCase } from '@/use-cases/fixed-expense/find-necessary-fixed-expenses-by-month.js'
 
@@ -12,6 +13,6 @@ export async function findNecessaryFixedExpensesByMonthController(
 	reply: FastifyReply,
 ) {
 	const useCase = new FindNecessaryFixedExpensesByMonthUseCase(container.fixedExpenseRepository)
-	const fixedExpenses = await useCase.execute(request.params.month)
-	reply.send(fixedExpenses)
+	const expenses = await useCase.execute(request.params.month)
+	reply.send(expenses.map((e) => FixedExpenseMapper.toResponse(e)))
 }
