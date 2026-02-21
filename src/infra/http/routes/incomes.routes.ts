@@ -16,5 +16,5 @@ export async function incomeRoutes(app: FastifyInstance) {
 
 	app.put('/:id', updateIncomeController)
 
-	app.delete('/', deleteIncomeController)
+	app.delete('/:id', deleteIncomeController)
 }
