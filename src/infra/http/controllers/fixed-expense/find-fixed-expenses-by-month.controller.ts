@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindFixedExpensesByMonthUseCase } from '@/application/use-cases/fixed-expense/find-fixed-expenses-by-month.js'
 import { FixedExpenseMapper } from '@/infra/http/mappers/fixed-expense.mapper.js'
-import type { monthParamRequest } from '@/infra/http/schemas/shared/month-param.schema.js'
+import type { monthParamRequest } from '@/infra/http/schemas/month-param.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

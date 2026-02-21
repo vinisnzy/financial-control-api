@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindVariableExpenseByIdUseCase } from '@/application/use-cases/variable-expense/find-variable-expense-by-id.js'
 import { VariableExpenseMapper } from '@/infra/http/mappers/variable-expense.mapper.js'
-import type { idParamRequest } from '@/infra/http/schemas/shared/id-param.schema.js'
+import type { idParamRequest } from '@/infra/http/schemas/id-param.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

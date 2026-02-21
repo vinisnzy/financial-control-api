@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindFixedExpensesByCategoryAndMonthUseCase } from '@/application/use-cases/fixed-expense/find-fixed-expenses-by-category-and-month.js'
 import { FixedExpenseMapper } from '@/infra/http/mappers/fixed-expense.mapper.js'
-import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/shared/category-and-month-params.schema.js'
+import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/category-and-month-params.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

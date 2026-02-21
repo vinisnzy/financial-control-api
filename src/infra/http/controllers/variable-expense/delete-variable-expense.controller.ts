@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { DeleteVariableExpenseUseCase } from '@/application/use-cases/variable-expense/delete-variable-expense.js'
-import type { idParamRequest } from '@/infra/http/schemas/shared/id-param.schema.js'
+import type { idParamRequest } from '@/infra/http/schemas/id-param.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

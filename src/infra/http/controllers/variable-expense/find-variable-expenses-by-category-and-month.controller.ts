@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindVariableExpensesByCategoryAndMonthUseCase } from '@/application/use-cases/variable-expense/find-variable-expenses-by-category-and-month.js'
 import { VariableExpenseMapper } from '@/infra/http/mappers/variable-expense.mapper.js'
-import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/shared/category-and-month-params.schema.js'
+import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/category-and-month-params.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

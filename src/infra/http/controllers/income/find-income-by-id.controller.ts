@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindIncomeByIdUseCase } from '@/application/use-cases/income/find-income-by-id.js'
 import { IncomeMapper } from '@/infra/http/mappers/income.mapper.js'
-import type { idParamRequest } from '@/infra/http/schemas/shared/id-param.schema.js'
+import type { idParamRequest } from '@/infra/http/schemas/id-param.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {

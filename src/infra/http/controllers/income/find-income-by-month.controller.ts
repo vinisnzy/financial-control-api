@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindIncomesByMonthUseCase } from '@/application/use-cases/income/find-income-by-month.js'
 import { IncomeMapper } from '@/infra/http/mappers/income.mapper.js'
-import type { monthParamRequest } from '@/infra/http/schemas/shared/month-param.schema.js'
+import type { monthParamRequest } from '@/infra/http/schemas/month-param.schema.js'
 import { container } from '@/main/container.js'
 
 type RequestType = {
