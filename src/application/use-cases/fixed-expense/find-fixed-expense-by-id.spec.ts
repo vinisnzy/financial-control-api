@@ -26,10 +26,9 @@ describe('Find fixed expense by id use case', () => {
 		expect(found.name).toBe('Rent')
 	})
 
-	it('should return null if fixed expense id does not exist', async () => {
+	it('should throw error if fixed expense id does not exist', async () => {
 		const repository = new InMemoryFixedExpenseRepository()
 		const findById = new FindFixedExpenseByIdUseCase(repository)
-		const found = await findById.execute('non-existent-id')
-		expect(found).toBeNull()
+		expect(findById.execute('non-existent-id')).rejects.toThrow()
 	})
 })

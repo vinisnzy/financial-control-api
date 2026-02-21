@@ -22,10 +22,9 @@ describe('Find income by id use case', () => {
 		expect(found.name).toBe('Salary')
 	})
 
-	it('should return null if income id does not exist', async () => {
+	it('should throw error if income id does not exist', async () => {
 		const repository = new InMemoryIncomeRepository()
 		const findById = new FindIncomeByIdUseCase(repository)
-		const found = await findById.execute('non-existent-id')
-		expect(found).toBeNull()
+		expect(findById.execute('non-existent-id')).rejects.toThrow()
 	})
 })

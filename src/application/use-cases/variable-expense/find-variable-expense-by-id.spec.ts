@@ -27,10 +27,9 @@ describe('Find variable expense by id use case', () => {
 		expect(found.name).toBe('Supermarket')
 	})
 
-	it('should return null if variable expense id does not exist', async () => {
+	it('should throw error if variable expense id does not exist', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
 		const findById = new FindVariableExpenseByIdUseCase(repository)
-		const found = await findById.execute('non-existent-id')
-		expect(found).toBeNull()
+		expect(findById.execute('non-existent-id')).rejects.toThrow()
 	})
 })
