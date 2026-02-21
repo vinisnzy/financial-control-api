@@ -3,3 +3,4 @@
 /http
 .env
 package-lock.json
+/src/generated/prisma
