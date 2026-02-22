@@ -12,7 +12,7 @@ export class VariableExpenseMapper {
 			amount: entity.amount,
 			category: entity.category,
 			necessary: entity.necessary,
-			date: entity.date,
+			date: entity.date.toISOString(),
 		}
 	}
 }

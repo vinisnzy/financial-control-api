@@ -7,5 +7,5 @@ export interface VariableExpenseResponseDTO {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
-	date: Date
+	date: string
 }
