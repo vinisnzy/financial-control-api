@@ -7,9 +7,7 @@ export const createVariableExpenseSchema = z.object({
 	amount: z.number().positive(),
 	category: z.enum(ExpenseCategory),
 	necessary: z.boolean(),
-	date: z
-		.string()
-		.regex(/^(?:\d{4})-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])$/, 'A data deve estar no formato YYYY-MM-DD'),
+	date: z.coerce.date().optional(),
 })
 
 export type CreateVariableExpenseRequest = z.infer<typeof createVariableExpenseSchema>

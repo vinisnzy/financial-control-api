@@ -1,6 +1,16 @@
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { BadRequestError } from '@/domain/errors/bad-request-error.js'
 
+interface VariableExpenseRequest {
+	id: string
+	month: string
+	name: string
+	amount: number
+	category: ExpenseCategory
+	necessary: boolean
+	date?: Date
+}
+
 interface VariableExpenseProps {
 	id: string
 	month: string
@@ -8,26 +18,27 @@ interface VariableExpenseProps {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
-	date: string // YYYY-MM-DD
+	date: Date
 }
 
 export class VariableExpense {
 	private props: VariableExpenseProps
 
-	constructor(props: VariableExpenseProps) {
-		if (!props.month) {
+	constructor(request: VariableExpenseRequest) {
+		if (!request.month) {
 			throw new BadRequestError('Expense month cannot be blank')
 		}
-		if (!props.name) {
+		if (!request.name) {
 			throw new BadRequestError('Expense name cannot be blank')
 		}
-		if (props.amount <= 0) {
+		if (request.amount <= 0) {
 			throw new BadRequestError('Expense amount cannot be negative or zero')
 		}
-		if (!props.date) {
-			throw new BadRequestError('Expense date cannot be blank')
+		const date = request.date ?? new Date()
+		this.props = {
+			...request,
+			date,
 		}
-		this.props = props
 	}
 
 	get id() {

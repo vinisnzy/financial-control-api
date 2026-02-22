@@ -14,7 +14,7 @@ describe('Variable expense entity', () => {
 			amount: 25.0,
 			category: ExpenseCategory.TRANSPORT,
 			necessary: true,
-			date: '2026-02-15',
+			date: new Date(Date.UTC(2026, 1, 15)),
 		})
 
 		expect(variableExpense).toBeInstanceOf(VariableExpense)
@@ -34,7 +34,7 @@ describe('Variable expense entity', () => {
 				amount: 25.0,
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
-				date: '2026-02-15',
+				date: new Date(Date.UTC(2026, 1, 15)),
 			})
 		}).toThrow()
 	})
@@ -48,7 +48,7 @@ describe('Variable expense entity', () => {
 				amount: 25.0,
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
-				date: '2026-02-15',
+				date: new Date(Date.UTC(2026, 1, 15)),
 			})
 		}).toThrow()
 	})
@@ -62,7 +62,7 @@ describe('Variable expense entity', () => {
 				amount: -25.0,
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
-				date: '2026-02-15',
+				date: new Date(Date.UTC(2026, 1, 15)),
 			})
 		}).toThrow()
 	})
@@ -76,21 +76,7 @@ describe('Variable expense entity', () => {
 				amount: 0,
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
-				date: '2026-02-15',
-			})
-		}).toThrow()
-	})
-
-	it('should not be able create an variable expense with date blank', () => {
-		expect(() => {
-			return new VariableExpense({
-				id: randomUUID().toString(),
-				month: '2026-02',
-				name: 'Uber',
-				amount: 25.0,
-				category: ExpenseCategory.TRANSPORT,
-				necessary: true,
-				date: '',
+				date: new Date(Date.UTC(2026, 1, 15)),
 			})
 		}).toThrow()
 	})

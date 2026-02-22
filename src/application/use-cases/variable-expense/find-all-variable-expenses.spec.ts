@@ -16,7 +16,7 @@ describe('Find all variable expenses use case', () => {
 			amount: 300,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		await createVariableExpense.execute({
 			name: 'Cinema',
@@ -24,7 +24,7 @@ describe('Find all variable expenses use case', () => {
 			amount: 50,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-03-11',
+			date: new Date(Date.UTC(2026, 2, 11)),
 		})
 
 		const all = await findAll.execute()

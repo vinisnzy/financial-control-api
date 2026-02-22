@@ -16,7 +16,7 @@ describe('Find necessary variable expenses by month use case', () => {
 			amount: 300,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		await createVariableExpense.execute({
 			name: 'Cinema',
@@ -24,7 +24,7 @@ describe('Find necessary variable expenses by month use case', () => {
 			amount: 50,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 		await createVariableExpense.execute({
 			name: 'Supermarket January',
@@ -32,7 +32,7 @@ describe('Find necessary variable expenses by month use case', () => {
 			amount: 250,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-01-10',
+			date: new Date(Date.UTC(2026, 0, 10)),
 		})
 
 		const necessaryFeb = await findNecessaryByMonth.execute('2026-02')

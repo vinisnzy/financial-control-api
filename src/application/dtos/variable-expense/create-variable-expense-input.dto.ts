@@ -6,5 +6,5 @@ export interface CreateVariableExpenseInput {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
-	date: string
+	date?: Date
 }

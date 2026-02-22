@@ -16,7 +16,7 @@ describe('Find variable expense by id use case', () => {
 			amount: 300,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense = (await repository.findByMonth('2026-02')).find((e) => e.name === 'Supermarket')
 		if (!expense) throw new Error('Expense not found in test')
