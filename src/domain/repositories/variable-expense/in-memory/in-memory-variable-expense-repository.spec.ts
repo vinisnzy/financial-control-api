@@ -23,7 +23,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -32,7 +32,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense1)
@@ -53,7 +53,7 @@ describe('In memory variable expense repository', () => {
 		const amount = 300.0
 		const category = ExpenseCategory.FOOD
 		const necessary = true
-		const date = '2026-02-10'
+		const date = new Date(Date.UTC(2026, 1, 10))
 
 		await repository.create(
 			new VariableExpense({
@@ -103,7 +103,7 @@ describe('In memory variable expense repository', () => {
 				amount: 300.0,
 				category: ExpenseCategory.FOOD,
 				necessary: true,
-				date: '2026-02-10',
+				date: new Date(Date.UTC(2026, 1, 10)),
 			}),
 		)
 
@@ -132,7 +132,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -141,7 +141,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 		const expense3 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -150,7 +150,7 @@ describe('In memory variable expense repository', () => {
 			amount: 250.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-01-10',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 
 		await repository.create(expense1)
@@ -174,7 +174,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -183,7 +183,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 
 		await repository.create(expense1)
@@ -206,7 +206,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -215,7 +215,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense1)
@@ -238,7 +238,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -247,7 +247,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 		const expense3 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -256,7 +256,7 @@ describe('In memory variable expense repository', () => {
 			amount: 250.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-01-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense1)
@@ -280,7 +280,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: false,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		await repository.create(expense1)
 
@@ -299,7 +299,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		const expense2 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -308,7 +308,7 @@ describe('In memory variable expense repository', () => {
 			amount: 50.0,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
-			date: '2026-02-11',
+			date: new Date(Date.UTC(2026, 1, 11)),
 		})
 		const expense3 = new VariableExpense({
 			id: randomUUID().toString(),
@@ -317,7 +317,7 @@ describe('In memory variable expense repository', () => {
 			amount: 250.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-01-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense1)
@@ -341,7 +341,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 		await repository.create(expense1)
 
@@ -363,7 +363,7 @@ describe('In memory variable expense repository', () => {
 				amount: 300.0,
 				category: ExpenseCategory.FOOD,
 				necessary: true,
-				date: '2026-02-10',
+				date: new Date(Date.UTC(2026, 1, 10)),
 			}),
 		)
 
@@ -372,7 +372,7 @@ describe('In memory variable expense repository', () => {
 		const amount = 350.0
 		const category = ExpenseCategory.FOOD
 		const necessary = true
-		const date = '2026-02-12'
+		const date = new Date(Date.UTC(2026, 1, 12))
 
 		const expense = new VariableExpense({
 			id,
@@ -407,7 +407,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await expect(repository.save(expense)).rejects.toThrow()
@@ -425,7 +425,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense)
@@ -448,7 +448,7 @@ describe('In memory variable expense repository', () => {
 			amount: 300.0,
 			category: ExpenseCategory.FOOD,
 			necessary: true,
-			date: '2026-02-10',
+			date: new Date(Date.UTC(2026, 1, 10)),
 		})
 
 		await repository.create(expense)

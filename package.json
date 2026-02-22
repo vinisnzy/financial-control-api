@@ -7,7 +7,7 @@
 		"build": "tsc",
 		"dev": "tsx watch --env-file=.env src/main/server.ts",
 		"start": "node .",
-		"test": "vitest"
+		"test": "vitest ./src"
 	},
 	"keywords": [],
 	"author": "",
