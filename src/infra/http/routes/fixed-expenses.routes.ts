@@ -9,19 +9,33 @@ import { findFixedExpensesByMonthController } from '@/infra/http/controllers/fix
 import { findNecessaryFixedExpensesByMonthController } from '@/infra/http/controllers/fixed-expense/find-necessary-fixed-expenses-by-month.controller.js'
 import { updateFixedExpenseController } from '@/infra/http/controllers/fixed-expense/update-fixed-expense.controller.js'
 import { findFixedExpensesByCategoryController } from '../controllers/fixed-expense/find-fixed-expenses-by-category.controller.js'
+import { categoryAndMonthParamsSchema } from '../schemas/category-and-month-params.schema.js'
+import { categoryParamSchema } from '../schemas/category-param.schema.js'
+import { createFixedExpenseSchema } from '../schemas/fixed-expense/create-fixed-expense.schema.js'
+import { updateFixedExpenseSchema } from '../schemas/fixed-expense/update-fixed-expense.schema.js'
+import { idParamSchema } from '../schemas/id-param.schema.js'
+import { monthParamSchema } from '../schemas/month-param.schema.js'
 
 export async function fixedExpensesRoutes(app: FastifyInstance) {
-	app.post('/', createFixedExpenseController)
+	app.post('/', { schema: { body: createFixedExpenseSchema } }, createFixedExpenseController)
 
 	app.get('/', findAllFixedExpenseController)
 	app.get('/necessary', findAllNecessaryFixedExpensesController)
-	app.get('/necessary/month/:month', findNecessaryFixedExpensesByMonthController)
-	app.get('/:id', findFixedExpenseByIdController)
-	app.get('/month/:month', findFixedExpensesByMonthController)
-	app.get('/category/:category', findFixedExpensesByCategoryController)
-	app.get('/category/:category/month/:month', findFixedExpensesByCategoryAndMonthController)
+	app.get(
+		'/necessary/month/:month',
+		{ schema: { params: monthParamSchema } },
+		findNecessaryFixedExpensesByMonthController,
+	)
+	app.get('/:id', { schema: { params: idParamSchema } }, findFixedExpenseByIdController)
+	app.get('/month/:month', { schema: { params: monthParamSchema } }, findFixedExpensesByMonthController)
+	app.get('/category/:category', { schema: { params: categoryParamSchema } }, findFixedExpensesByCategoryController)
+	app.get(
+		'/category/:category/month/:month',
+		{ schema: { params: categoryAndMonthParamsSchema } },
+		findFixedExpensesByCategoryAndMonthController,
+	)
 
-	app.put('/:id', updateFixedExpenseController)
+	app.put('/:id', { schema: { params: idParamSchema, body: updateFixedExpenseSchema } }, updateFixedExpenseController)
 
-	app.delete('/:id', deleteFixedExpenseController)
+	app.delete('/:id', { schema: { params: idParamSchema } }, deleteFixedExpenseController)
 }

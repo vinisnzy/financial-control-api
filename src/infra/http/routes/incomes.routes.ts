@@ -6,15 +6,19 @@ import { findAllIncomesController } from '@/infra/http/controllers/income/find-a
 import { findIncomeByIdController } from '@/infra/http/controllers/income/find-income-by-id.controller.js'
 import { findIncomeByMonthController } from '@/infra/http/controllers/income/find-income-by-month.controller.js'
 import { updateIncomeController } from '@/infra/http/controllers/income/update-income.controller.js'
+import { idParamSchema } from '../schemas/id-param.schema.js'
+import { createIncomeSchema } from '../schemas/income/create-income.schema.js'
+import { updateIncomeSchema } from '../schemas/income/update-income.schema.js'
+import { monthParamSchema } from '../schemas/month-param.schema.js'
 
 export async function incomeRoutes(app: FastifyInstance) {
-	app.post('/', createIncomeController)
+	app.post('/', { schema: { body: createIncomeSchema } }, createIncomeController)
 
 	app.get('/', findAllIncomesController)
-	app.get('/:id', findIncomeByIdController)
-	app.get('/month/:month', findIncomeByMonthController)
+	app.get('/:id', { schema: { params: idParamSchema } }, findIncomeByIdController)
+	app.get('/month/:month', { schema: { params: monthParamSchema } }, findIncomeByMonthController)
 
-	app.put('/:id', updateIncomeController)
+	app.put('/:id', { schema: { params: idParamSchema, body: updateIncomeSchema } }, updateIncomeController)
 
-	app.delete('/:id', deleteIncomeController)
+	app.delete('/:id', { schema: { params: idParamSchema } }, deleteIncomeController)
 }
