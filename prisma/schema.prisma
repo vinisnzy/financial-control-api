@@ -6,3 +6,43 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Income {
+  id     String  @id @default(uuid())
+  name   String
+  month  String
+  amount Decimal @db.Decimal(10, 2)
+
+  @@map("incomes")
+}
+
+model FixedExpense {
+  id        String          @id @default(uuid())
+  name      String
+  month     String
+  amount    Decimal         @db.Decimal(10, 2)
+  category  ExpenseCategory
+  necessary Boolean         @default(false)
+
+  @@map("fixed_expenses")
+}
+
+model VariableExpense {
+  id        String          @id @default(uuid())
+  name      String
+  month     String
+  amount    Decimal         @db.Decimal(10, 2)
+  category  ExpenseCategory
+  necessary Boolean         @default(false)
+  date      DateTime        @default(now())
+
+  @@map("variable_expenses")
+}
+
+enum ExpenseCategory {
+  SUBSCRIPTION
+  INVESTMENT
+  TRANSPORT
+  FOOD
+  LEISURE
+}
