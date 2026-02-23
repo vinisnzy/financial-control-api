@@ -1,5 +1,6 @@
 import type { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
+import type { CreateFixedExpenseInput } from './dtos/create-fixed-expense-input.dto.js'
 
 export interface FixedExpenseRepository {
 	findAll(): Promise<FixedExpense[]>
@@ -12,6 +13,6 @@ export interface FixedExpenseRepository {
 	findNecessaryByMonth(month: string): Promise<FixedExpense[]>
 
 	save(expense: FixedExpense): Promise<void>
-	create(expense: FixedExpense): Promise<void>
+	create(data: CreateFixedExpenseInput): Promise<void>
 	delete(ex: string): Promise<void>
 }

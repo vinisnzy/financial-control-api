@@ -1,6 +1,8 @@
-import type { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
+import { randomUUID } from 'node:crypto'
+import { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { CreateFixedExpenseInput } from '../dtos/create-fixed-expense-input.dto.js'
 import type { FixedExpenseRepository } from '../fixed-expense-repository.js'
 
 export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
@@ -40,8 +42,12 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 
 		this.expenses[index] = expense
 	}
-	async create(expense: FixedExpense): Promise<void> {
-		this.expenses.push(expense)
+	async create(data: CreateFixedExpenseInput): Promise<void> {
+		const fixedExpense = new FixedExpense({
+			id: randomUUID().toString(),
+			...data,
+		})
+		this.expenses.push(fixedExpense)
 	}
 	async delete(id: string): Promise<void> {
 		this.expenses = this.expenses.filter((e) => e.id !== id)

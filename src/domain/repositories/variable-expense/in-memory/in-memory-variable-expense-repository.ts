@@ -1,6 +1,8 @@
-import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
+import { randomUUID } from 'node:crypto'
+import { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { CreateVariableExpenseInput } from '../dtos/create-variable-expense-input.dto.js'
 import type { VariableExpenseRepository } from '../variable-expense.js'
 
 export class InMemoryVariableExpenseRepository implements VariableExpenseRepository {
@@ -35,8 +37,12 @@ export class InMemoryVariableExpenseRepository implements VariableExpenseReposit
 
 		this.expenses[index] = expense
 	}
-	async create(expense: VariableExpense): Promise<void> {
-		this.expenses.push(expense)
+	async create(data: CreateVariableExpenseInput): Promise<void> {
+		const variableExpense = new VariableExpense({
+			id: randomUUID().toString(),
+			...data,
+		})
+		this.expenses.push(variableExpense)
 	}
 	async delete(id: string): Promise<void> {
 		this.expenses = this.expenses.filter((e) => e.id !== id)

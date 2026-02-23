@@ -1,5 +1,6 @@
 import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
+import type { CreateVariableExpenseInput } from './dtos/create-variable-expense-input.dto.js'
 
 export interface VariableExpenseRepository {
 	findAll(): Promise<VariableExpense[]>
@@ -11,6 +12,6 @@ export interface VariableExpenseRepository {
 	findNecessaryByMonth(month: string): Promise<VariableExpense[]>
 
 	save(expense: VariableExpense): Promise<void>
-	create(expense: VariableExpense): Promise<void>
+	create(data: CreateVariableExpenseInput): Promise<void>
 	delete(ex: string): Promise<void>
 }

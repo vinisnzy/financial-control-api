@@ -1,5 +1,7 @@
-import type { Income } from '@/domain/entities/income/income.js'
+import { randomUUID } from 'node:crypto'
+import { Income } from '@/domain/entities/income/income.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { CreateIncomeInput } from '../dtos/create-income-input.dto.js'
 import type { IncomeRepository } from '../income-repository.js'
 
 export class InMemoryIncomeRepository implements IncomeRepository {
@@ -30,7 +32,11 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 		this.incomes[index] = income
 	}
 
-	async create(income: Income): Promise<void> {
+	async create(data: CreateIncomeInput): Promise<void> {
+		const income = new Income({
+			id: randomUUID().toString(),
+			...data,
+		})
 		this.incomes.push(income)
 	}
 

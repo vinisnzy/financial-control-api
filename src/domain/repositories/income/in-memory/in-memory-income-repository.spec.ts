@@ -15,44 +15,39 @@ describe('In memory income repository', () => {
 	it('should be list all incomes', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const income1 = new Income({
-			id: randomUUID().toString(),
+		const income1 = {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
-		})
-		const income2 = new Income({
-			id: randomUUID().toString(),
+		}
+		const income2 = {
 			name: 'Previous Balance',
 			month: '2026-02',
 			amount: 500.0,
-		})
-
+		}
 		await repository.create(income1)
 		await repository.create(income2)
 
 		const incomes = await repository.findAll()
 
 		expect(incomes).toHaveLength(2)
-		expect(incomes).toEqual(expect.arrayContaining([income1, income2]))
 	})
 
 	it('should be find income by id', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const id = randomUUID().toString()
 		const name = 'Salary'
 		const month = '2026-02'
 		const amount = 2000.0
 
-		await repository.create(
-			new Income({
-				id,
-				name,
-				month,
-				amount,
-			}),
-		)
+		await repository.create({
+			name,
+			month,
+			amount,
+		})
+
+		const incomes = await repository.findAll()
+		const id = incomes[0].id
 
 		const response = await repository.findById(id)
 
@@ -79,14 +74,11 @@ describe('In memory income repository', () => {
 	it('should not be find income by id when current incomes does not have the corresponding id', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		await repository.create(
-			new Income({
-				id: randomUUID().toString(),
-				name: 'Salary',
-				month: '2026-02',
-				amount: 2000.0,
-			}),
-		)
+		await repository.create({
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
 
 		const otherId = randomUUID().toString()
 
@@ -109,14 +101,11 @@ describe('In memory income repository', () => {
 	it('should not be find income by name and month when current incomes does not have the corresponding name', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		await repository.create(
-			new Income({
-				id: randomUUID().toString(),
-				name: 'Salary',
-				month: '2026-02',
-				amount: 2000.0,
-			}),
-		)
+		await repository.create({
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
 
 		const otherName = 'Bônus'
 
@@ -128,14 +117,11 @@ describe('In memory income repository', () => {
 	it('should not be find income by name and month when current incomes does not have the corresponding month', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		await repository.create(
-			new Income({
-				id: randomUUID().toString(),
-				name: 'Salary',
-				month: '2026-02',
-				amount: 2000.0,
-			}),
-		)
+		await repository.create({
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
 
 		const otherMonth = '2026-03'
 
@@ -147,19 +133,15 @@ describe('In memory income repository', () => {
 	it('should be find income by name and month', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const id = randomUUID().toString()
 		const name = 'Salary'
 		const month = '2026-02'
 		const amount = 2000.0
 
-		await repository.create(
-			new Income({
-				id,
-				name,
-				month,
-				amount,
-			}),
-		)
+		await repository.create({
+			name,
+			month,
+			amount,
+		})
 
 		const response = await repository.findByNameAndMonth(name, month)
 
@@ -167,7 +149,6 @@ describe('In memory income repository', () => {
 
 		if (!response) throw new Error('Income not found in test')
 
-		expect(response.id).toEqual(id)
 		expect(response.name).toEqual(name)
 		expect(response.month).toEqual(month)
 		expect(response.amount).toEqual(amount)
@@ -184,25 +165,21 @@ describe('In memory income repository', () => {
 	it('should be list incomes by month', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const income1 = new Income({
-			id: randomUUID().toString(),
+		const income1 = {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
-		})
-		const income2 = new Income({
-			id: randomUUID().toString(),
+		}
+		const income2 = {
 			name: 'Previous Balance',
 			month: '2026-02',
 			amount: 500.0,
-		})
-		const income3 = new Income({
-			id: randomUUID().toString(),
+		}
+		const income3 = {
 			name: 'January Salary',
 			month: '2026-01',
 			amount: 2500.0,
-		})
-
+		}
 		await repository.create(income1)
 		await repository.create(income2)
 		await repository.create(income3)
@@ -211,26 +188,23 @@ describe('In memory income repository', () => {
 
 		expect(incomes.every((i) => i.month === '2026-02')).toBe(true)
 		expect(incomes).toHaveLength(2)
-		expect(incomes).toEqual(expect.arrayContaining([income1, income2]))
 	})
 
 	it('should be update an existing income', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const id = randomUUID().toString()
-
-		await repository.create(
-			new Income({
-				id,
-				name: 'Salary',
-				month: '2026-02',
-				amount: 2000.0,
-			}),
-		)
+		await repository.create({
+			name: 'Salary',
+			month: '2026-02',
+			amount: 2000.0,
+		})
 
 		const name = 'Bônus'
 		const month = '2026-02'
 		const amount = 200.0
+
+		const incomes = await repository.findAll()
+		const id = incomes[0].id
 
 		const income = new Income({
 			id,
@@ -265,43 +239,35 @@ describe('In memory income repository', () => {
 	it('should be create an income', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const id = randomUUID().toString()
-
-		const income = new Income({
-			id,
+		await repository.create({
 			name: 'Bônus',
 			month: '2026-02',
 			amount: 200.0,
 		})
 
-		await repository.create(income)
-
 		const incomes = await repository.findAll()
 
 		expect(incomes).toHaveLength(1)
-		expect(incomes[0].id).toEqual(id)
 	})
 
 	it('should be delete an income', async () => {
 		const repository = new InMemoryIncomeRepository()
 
-		const id = randomUUID().toString()
-
-		const income = new Income({
-			id,
+		await repository.create({
 			name: 'Bônus',
 			month: '2026-02',
 			amount: 200.0,
 		})
 
-		await repository.create(income)
+		const incomes = await repository.findAll()
+		const id = incomes[0].id
 
 		await repository.delete(id)
 
-		const incomes = await repository.findAll()
+		const incomesAfterDelete = await repository.findAll()
 
-		expect(incomes).toHaveLength(0)
-		expect(incomes).toEqual([])
+		expect(incomesAfterDelete).toHaveLength(0)
+		expect(incomesAfterDelete).toEqual([])
 
 		const deletedIncome = await repository.findById(id)
 		expect(deletedIncome).toBeNull()
