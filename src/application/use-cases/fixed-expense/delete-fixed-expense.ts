@@ -4,6 +4,6 @@ export class DeleteFixedExpenseUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
 	async execute(id: string) {
-		this.repository.delete(id)
+		await this.repository.delete(id)
 	}
 }

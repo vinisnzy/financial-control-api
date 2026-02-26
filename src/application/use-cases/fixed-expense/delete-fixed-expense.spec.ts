@@ -28,10 +28,10 @@ describe('Delete fixed expense use case', () => {
 		expect(await repository.findAll()).toHaveLength(0)
 	})
 
-	it('should not throw when deleting a non-existent fixed expense', async () => {
+	it('should throw when deleting a non-existent fixed expense', async () => {
 		const repository = new InMemoryFixedExpenseRepository()
 		const deleteFixedExpense = new DeleteFixedExpenseUseCase(repository)
 
-		await expect(deleteFixedExpense.execute('non-existent-id')).resolves.toBeUndefined()
+		await expect(deleteFixedExpense.execute('non-existent-id')).rejects.toThrow()
 	})
 })

@@ -50,6 +50,10 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 		this.expenses.push(fixedExpense)
 	}
 	async delete(id: string): Promise<void> {
-		this.expenses = this.expenses.filter((e) => e.id !== id)
+		const index = this.expenses.findIndex((e) => e.id === id)
+		if (index === -1) {
+			throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
+		}
+		this.expenses.splice(index, 1)
 	}
 }

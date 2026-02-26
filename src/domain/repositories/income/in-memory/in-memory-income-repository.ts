@@ -41,6 +41,10 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 	}
 
 	async delete(id: string): Promise<void> {
-		this.incomes = this.incomes.filter((i) => i.id !== id)
+		const index = this.incomes.findIndex((i) => i.id === id)
+		if (index === -1) {
+			throw new ResourceNotFoundError(`Income not found with id: ${id}`)
+		}
+		this.incomes.splice(index, 1)
 	}
 }

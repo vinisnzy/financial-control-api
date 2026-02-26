@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
+import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryVariableExpenseRepository } from '@/domain/repositories/variable-expense/in-memory/in-memory-variable-expense-repository.js'
 import { CreateVariableExpenseUseCase } from './create-variable-expense.js'
 import { DeleteVariableExpenseUseCase } from './delete-variable-expense.js'
@@ -33,6 +34,6 @@ describe('Delete variable expense use case', () => {
 		const repository = new InMemoryVariableExpenseRepository()
 		const deleteVariableExpense = new DeleteVariableExpenseUseCase(repository)
 
-		await expect(deleteVariableExpense.execute('non-existent-id')).resolves.toBeUndefined()
+		await expect(deleteVariableExpense.execute('non-existent-id')).rejects.toThrow(ResourceNotFoundError)
 	})
 })

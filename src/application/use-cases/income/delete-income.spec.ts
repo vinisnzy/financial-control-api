@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryIncomeRepository } from '@/domain/repositories/income/in-memory/in-memory-income-repository.js'
 import { CreateIncomeUseCase } from './create-income.js'
 import { DeleteIncomeUseCase } from './delete-income.js'
@@ -26,10 +27,10 @@ describe('Delete income use case', () => {
 		expect(await repository.findAll()).toHaveLength(0)
 	})
 
-	it('should not throw when deleting a non-existent income', async () => {
+	it('should throw when deleting a non-existent income', async () => {
 		const repository = new InMemoryIncomeRepository()
 		const deleteIncome = new DeleteIncomeUseCase(repository)
 
-		await expect(deleteIncome.execute('non-existent-id')).resolves.toBeUndefined()
+		await expect(deleteIncome.execute('non-existent-id')).rejects.toThrow()
 	})
 })
