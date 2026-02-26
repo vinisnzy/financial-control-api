@@ -14,5 +14,5 @@ export interface FixedExpenseRepository {
 
 	save(expense: FixedExpense): Promise<void>
 	create(data: CreateFixedExpenseInput): Promise<void>
-	delete(ex: string): Promise<void>
+	delete(id: string): Promise<void>
 }

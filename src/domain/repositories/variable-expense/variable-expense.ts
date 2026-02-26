@@ -13,5 +13,5 @@ export interface VariableExpenseRepository {
 
 	save(expense: VariableExpense): Promise<void>
 	create(data: CreateVariableExpenseInput): Promise<void>
-	delete(ex: string): Promise<void>
+	delete(id: string): Promise<void>
 }
