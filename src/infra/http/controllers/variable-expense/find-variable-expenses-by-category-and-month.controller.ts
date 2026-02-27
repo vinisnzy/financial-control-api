@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { FindVariableExpensesByCategoryAndMonthUseCase } from '@/application/use-cases/variable-expense/find-variable-expenses-by-category-and-month.js'
-import { VariableExpenseMapper } from '@/infra/http/mappers/variable-expense.mapper.js'
+import { variableExpenseEntityToResponse } from '@/infra/http/mappers/variable-expense-to-response.js'
 import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/category-and-month-params.schema.js'
 import { container } from '@/main/container.js'
 
@@ -15,5 +15,5 @@ export async function findVariableExpensesByCategoryAndMonthController(
 	const useCase = new FindVariableExpensesByCategoryAndMonthUseCase(container.variableExpenseRepository)
 	const { category, month } = request.params
 	const variableExpenses = await useCase.execute(category, month)
-	reply.send(variableExpenses.map((e) => VariableExpenseMapper.toResponse(e)))
+	reply.send(variableExpenses.map((e) => variableExpenseEntityToResponse(e)))
 }
