@@ -1,9 +1,9 @@
-import { InMemoryFixedExpenseRepository } from '@/domain/repositories/fixed-expense/in-memory/in-memory-fixed-expense-repository.js'
-import { InMemoryIncomeRepository } from '@/domain/repositories/income/in-memory/in-memory-income-repository.js'
-import { InMemoryVariableExpenseRepository } from '@/domain/repositories/variable-expense/in-memory/in-memory-variable-expense-repository.js'
+import { FixedExpenseRepositoryPostgres } from '@/infra/database/repositories/fixed-expense-repository-postgres.js'
+import { IncomeRepositoryPostgres } from '@/infra/database/repositories/income-repository-postgres.js'
+import { VariableExpenseRepositoryPostgres } from '@/infra/database/repositories/variable-expense-repository-postgres.js'
 
 export const container = {
-	incomeRepository: new InMemoryIncomeRepository(),
-	fixedExpenseRepository: new InMemoryFixedExpenseRepository(),
-	variableExpenseRepository: new InMemoryVariableExpenseRepository(),
+	incomeRepository: new IncomeRepositoryPostgres(),
+	fixedExpenseRepository: new FixedExpenseRepositoryPostgres(),
+	variableExpenseRepository: new VariableExpenseRepositoryPostgres(),
 }

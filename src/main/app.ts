@@ -3,7 +3,7 @@ import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fas
 import { registerRoutes } from '@/infra/http/routes/routes.js'
 
 export function buildApp() {
-	const app = Fastify({ logger: true })
+	const app = Fastify()
 	app.setValidatorCompiler(validatorCompiler)
 	app.setSerializerCompiler(serializerCompiler)
 	registerRoutes(app)
