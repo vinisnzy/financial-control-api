@@ -35,6 +35,12 @@ export class IncomeRepositoryPostgres implements IncomeRepository {
 		return incomes.map((i) => incomePrismaToEntity(i))
 	}
 	async save(income: Income): Promise<void> {
+		const existsIncome = await prisma.income.findUnique({
+			where: { id: income.id },
+		})
+		if (!existsIncome) {
+			throw new ResourceNotFoundError(`Income not found with id: ${income.id}`)
+		}
 		await prisma.income.update({
 			where: { id: income.id },
 			data: {

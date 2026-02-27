@@ -61,6 +61,12 @@ export class FixedExpenseRepositoryPostgres implements FixedExpenseRepository {
 		return fixedExpenses.map((e) => fixedExpensePrismaToEntity(e))
 	}
 	async save(expense: FixedExpense): Promise<void> {
+		const existsExpense = await prisma.fixedExpense.findUnique({
+			where: { id: expense.id },
+		})
+		if (!existsExpense) {
+			throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+		}
 		await prisma.fixedExpense.update({
 			where: { id: expense.id },
 			data: {

@@ -52,6 +52,12 @@ export class VariableExpenseRepositoryPostgres implements VariableExpenseReposit
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
 	async save(expense: VariableExpense): Promise<void> {
+		const existsExpense = await prisma.variableExpense.findUnique({
+			where: { id: expense.id },
+		})
+		if (!existsExpense) {
+			throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+		}
 		await prisma.variableExpense.update({
 			where: { id: expense.id },
 			data: {
