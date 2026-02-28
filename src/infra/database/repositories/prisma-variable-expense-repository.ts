@@ -7,7 +7,7 @@ import { prisma } from '../lib/prisma.js'
 import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
 import { variableExpensePrismaToEntity } from '../mapper/variable-expense-prisma-to-entity.js'
 
-export class VariableExpenseRepositoryPostgres implements VariableExpenseRepository {
+export class PrismaVariableExpenseRepository implements VariableExpenseRepository {
 	async findAll(): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany()
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))

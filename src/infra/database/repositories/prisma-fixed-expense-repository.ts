@@ -7,7 +7,7 @@ import { prisma } from '../lib/prisma.js'
 import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
 import { fixedExpensePrismaToEntity } from '../mapper/fixed-expense-prisma-to-entity.js'
 
-export class FixedExpenseRepositoryPostgres implements FixedExpenseRepository {
+export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 	async findAll(): Promise<FixedExpense[]> {
 		const fixedExpenses = await prisma.fixedExpense.findMany()
 		return fixedExpenses.map((e) => fixedExpensePrismaToEntity(e))

@@ -1,9 +1,9 @@
-import { FixedExpenseRepositoryPostgres } from '@/infra/database/repositories/fixed-expense-repository-postgres.js'
-import { IncomeRepositoryPostgres } from '@/infra/database/repositories/income-repository-postgres.js'
-import { VariableExpenseRepositoryPostgres } from '@/infra/database/repositories/variable-expense-repository-postgres.js'
+import { PrismaFixedExpenseRepository } from '@/infra/database/repositories/prisma-fixed-expense-repository.js'
+import { PrismaIncomeRepository } from '@/infra/database/repositories/prisma-income-repository.js'
+import { PrismaVariableExpenseRepository } from '@/infra/database/repositories/prisma-variable-expense-repository.js'
 
 export const container = {
-	incomeRepository: new IncomeRepositoryPostgres(),
-	fixedExpenseRepository: new FixedExpenseRepositoryPostgres(),
-	variableExpenseRepository: new VariableExpenseRepositoryPostgres(),
+	incomeRepository: new PrismaIncomeRepository(),
+	fixedExpenseRepository: new PrismaFixedExpenseRepository(),
+	variableExpenseRepository: new PrismaVariableExpenseRepository(),
 }

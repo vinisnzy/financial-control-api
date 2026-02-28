@@ -5,7 +5,7 @@ import type { IncomeRepository } from '@/domain/repositories/income/income-repos
 import { prisma } from '../lib/prisma.js'
 import { incomePrismaToEntity } from '../mapper/income-prisma-to-entity.js'
 
-export class IncomeRepositoryPostgres implements IncomeRepository {
+export class PrismaIncomeRepository implements IncomeRepository {
 	async findAll(): Promise<Income[]> {
 		const incomes = await prisma.income.findMany()
 		return incomes.map((i) => incomePrismaToEntity(i))
