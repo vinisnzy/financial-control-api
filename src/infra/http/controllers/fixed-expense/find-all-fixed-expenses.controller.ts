@@ -1,10 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { FindAllFixedExpensesUseCase } from '@/application/use-cases/fixed-expense/find-all-fixed-expenses.js'
 import { fixedExpenseEntityToResponse } from '@/infra/http/mappers/fixed-expense-to-response.js'
 import { container } from '@/main/container.js'
 
 export async function findAllFixedExpenseController(_: FastifyRequest, reply: FastifyReply) {
-	const useCase = new FindAllFixedExpensesUseCase(container.fixedExpenseRepository)
-	const expenses = await useCase.execute()
+	const expenses = await container.findAllFixedExpenses.execute()
 	reply.send(expenses.map((e) => fixedExpenseEntityToResponse(e)))
 }

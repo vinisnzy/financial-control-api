@@ -1,10 +1,8 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { FindAllIncomesUseCase } from '@/application/use-cases/income/find-all-incomes.js'
 import { incomeEntityToResponse } from '@/infra/http/mappers/income-to-response.js'
 import { container } from '@/main/container.js'
 
 export async function findAllIncomesController(_: FastifyRequest, reply: FastifyReply) {
-	const useCase = new FindAllIncomesUseCase(container.incomeRepository)
-	const incomes = await useCase.execute()
+	const incomes = await container.findAllIncomes.execute()
 	reply.send(incomes.map((i) => incomeEntityToResponse(i)))
 }
