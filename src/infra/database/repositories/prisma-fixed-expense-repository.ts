@@ -3,6 +3,7 @@ import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { CreateFixedExpenseInput } from '@/domain/repositories/fixed-expense/dtos/create-fixed-expense-input.dto.js'
 import type { FixedExpenseRepository } from '@/domain/repositories/fixed-expense/fixed-expense-repository.js'
+import { Prisma } from '@/generated/prisma/client.js'
 import { prisma } from '../lib/prisma.js'
 import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
 import { fixedExpensePrismaToEntity } from '../mapper/fixed-expense-prisma-to-entity.js'
@@ -61,22 +62,22 @@ export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 		return fixedExpenses.map((e) => fixedExpensePrismaToEntity(e))
 	}
 	async save(expense: FixedExpense): Promise<void> {
-		const existsExpense = await prisma.fixedExpense.findUnique({
-			where: { id: expense.id },
-		})
-		if (!existsExpense) {
-			throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+		try {
+			await prisma.fixedExpense.update({
+				where: { id: expense.id },
+				data: {
+					month: expense.month,
+					name: expense.name,
+					amount: expense.amount,
+					category: toPrismaExpenseCategory(expense.category),
+					necessary: expense.necessary,
+				},
+			})
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+				throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+			}
 		}
-		await prisma.fixedExpense.update({
-			where: { id: expense.id },
-			data: {
-				month: expense.month,
-				name: expense.name,
-				amount: expense.amount,
-				category: toPrismaExpenseCategory(expense.category),
-				necessary: expense.necessary,
-			},
-		})
 	}
 	async create(data: CreateFixedExpenseInput): Promise<void> {
 		await prisma.fixedExpense.create({
@@ -87,14 +88,14 @@ export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 		})
 	}
 	async delete(id: string): Promise<void> {
-		const existsExpense = await prisma.fixedExpense.findUnique({
-			where: { id },
-		})
-		if (!existsExpense) {
-			throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
+		try {
+			await prisma.fixedExpense.delete({
+				where: { id },
+			})
+		} catch (e) {
+			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
+				throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
+			}
 		}
-		await prisma.fixedExpense.delete({
-			where: { id },
-		})
 	}
 }
