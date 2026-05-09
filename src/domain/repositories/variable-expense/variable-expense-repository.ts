@@ -1,18 +1,4 @@
-import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
-import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import type { CreateVariableExpenseInput } from './dtos/create-variable-expense-input.dto.js'
+import type { VariableExpenseReadRepository } from './variable-expense-read-repository.js'
+import type { VariableExpenseWriteRepository } from './variable-expense-write-repository.js'
 
-export interface VariableExpenseRepository {
-	findAll(): Promise<VariableExpense[]>
-	findById(id: string): Promise<VariableExpense | null>
-	findByMonth(month: string): Promise<VariableExpense[]>
-	findByNameAndMonth(name: string, month: string): Promise<VariableExpense | null>
-	findByCategory(category: ExpenseCategory): Promise<VariableExpense[]>
-	findByCategoryAndMonth(category: ExpenseCategory, month: string): Promise<VariableExpense[]>
-	findAllNecessary(): Promise<VariableExpense[]>
-	findNecessaryByMonth(month: string): Promise<VariableExpense[]>
-
-	save(expense: VariableExpense): Promise<void>
-	create(data: CreateVariableExpenseInput): Promise<void>
-	delete(id: string): Promise<void>
-}
+export interface VariableExpenseRepository extends VariableExpenseReadRepository, VariableExpenseWriteRepository {}
