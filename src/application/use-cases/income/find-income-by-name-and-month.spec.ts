@@ -18,10 +18,9 @@ describe('Find income by name and month use case', () => {
 		expect(found.amount).toBe(2000)
 	})
 
-	it('should return null if income with name and month does not exist', async () => {
+	it('should throw error if income with name and month does not exist', async () => {
 		const repository = new InMemoryIncomeRepository()
 		const findByNameAndMonth = new FindIncomeByNameAndMonthUseCase(repository)
-		const found = await findByNameAndMonth.execute('NonExistent', '2026-02')
-		expect(found).toBeNull()
+		await expect(findByNameAndMonth.execute('NonExistent', '2026-02')).rejects.toThrow()
 	})
 })
