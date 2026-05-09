@@ -9,7 +9,7 @@ export class CreateIncomeUseCase {
 		const { name, month } = request
 		const alreadyExists = await this.repository.findByNameAndMonth(name, month)
 		if (alreadyExists) {
-			throw new BadRequestError(`There is already a recipe with the name: ${name}, and the month: ${month}`)
+			throw new BadRequestError(`There is already a income with the name: ${name}, and the month: ${month}`)
 		}
 		this.repository.create(request)
 	}

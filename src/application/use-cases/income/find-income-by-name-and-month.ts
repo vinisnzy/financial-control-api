@@ -10,7 +10,7 @@ export class FindIncomeByNameAndMonthUseCase {
 	async execute(name: string, month: string): Promise<FindIncomeByNameAndMonthResponse> {
 		const income = await this.repository.findByNameAndMonth(name, month)
 		if (!income) {
-			throw new ResourceNotFoundError(`Income not found with id: ${name} and month: ${month}`)
+			throw new ResourceNotFoundError(`Income not found with name: ${name} and month: ${month}`)
 		}
 		return income
 	}
