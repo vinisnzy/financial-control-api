@@ -2,7 +2,7 @@ import type { VariableExpense } from '@/domain/entities/variable-expense/variabl
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { CreateVariableExpenseInput } from '@/domain/repositories/variable-expense/dtos/create-variable-expense-input.dto.js'
-import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense.js'
+import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
 import { Prisma } from '@/generated/prisma/client.js'
 import { prisma } from '../lib/prisma.js'
 import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
@@ -27,6 +27,13 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 			where: { month },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
+	}
+	async findByNameAndMonth(name: string, month: string): Promise<VariableExpense | null> {
+		const variableExpense = await prisma.variableExpense.findFirst({
+			where: { name, month },
+		})
+		if (!variableExpense) return null
+		return variableExpensePrismaToEntity(variableExpense)
 	}
 	async findByCategory(category: ExpenseCategory): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({

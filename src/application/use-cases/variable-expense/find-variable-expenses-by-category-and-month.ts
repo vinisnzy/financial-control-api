@@ -1,6 +1,6 @@
 import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense.js'
+import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
 
 type FindVariableExpensesByCategoryAndMonthResponse = VariableExpense[]
 

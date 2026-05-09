@@ -3,7 +3,7 @@ import { VariableExpense } from '@/domain/entities/variable-expense/variable-exp
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { CreateVariableExpenseInput } from '../dtos/create-variable-expense-input.dto.js'
-import type { VariableExpenseRepository } from '../variable-expense.js'
+import type { VariableExpenseRepository } from '../variable-expense-repository.js'
 
 export class InMemoryVariableExpenseRepository implements VariableExpenseRepository {
 	public expenses: VariableExpense[] = []
@@ -16,6 +16,9 @@ export class InMemoryVariableExpenseRepository implements VariableExpenseReposit
 	}
 	async findByMonth(month: string): Promise<VariableExpense[]> {
 		return this.expenses.filter((e) => e.month === month)
+	}
+	async findByNameAndMonth(name: string, month: string): Promise<VariableExpense | null> {
+		return this.expenses.find((e) => e.name === name && e.month === month) ?? null
 	}
 	async findByCategory(category: ExpenseCategory): Promise<VariableExpense[]> {
 		return this.expenses.filter((e) => e.category === category)
