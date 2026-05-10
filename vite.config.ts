@@ -1,5 +1,4 @@
 import { createRequire } from 'node:module'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vitest/config'
 
 const require = createRequire(import.meta.url)
@@ -10,11 +9,11 @@ function loadEnvFile(path: string) {
 }
 
 export default defineConfig({
-	plugins: [tsconfigPaths()],
+	resolve: { tsconfigPaths: true },
 	test: {
 		projects: [
 			{
-				plugins: [tsconfigPaths()],
+				resolve: { tsconfigPaths: true },
 				test: {
 					name: 'unit',
 					include: ['src/**/*.spec.ts'],
@@ -24,7 +23,7 @@ export default defineConfig({
 				},
 			},
 			{
-				plugins: [tsconfigPaths()],
+				resolve: { tsconfigPaths: true },
 				test: {
 					name: 'integration',
 					include: ['src/**/*.integration.spec.ts'],
