@@ -1,5 +1,5 @@
+import { httpErrors } from '@fastify/sensible'
 import type { Income } from '@/domain/entities/income/income.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { CreateIncomeInput } from '@/domain/repositories/income/dtos/create-income-input.dto.js'
 import type { IncomeRepository } from '@/domain/repositories/income/income-repository.js'
 import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
@@ -62,7 +62,7 @@ export class PrismaIncomeRepository implements IncomeRepository {
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Income not found with id: ${income.id}`)
+				throw httpErrors.notFound(`Income not found with id: ${income.id}`)
 			}
 		}
 	}
@@ -74,7 +74,7 @@ export class PrismaIncomeRepository implements IncomeRepository {
 			await prisma.income.delete({ where: { id } })
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Income not found with id: ${id}`)
+				throw httpErrors.notFound(`Income not found with id: ${id}`)
 			}
 		}
 	}

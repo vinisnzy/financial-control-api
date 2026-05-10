@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import { BadRequestError } from '@/domain/errors/bad-request-error.js'
 import { InMemoryVariableExpenseRepository } from '@/domain/repositories/variable-expense/in-memory/in-memory-variable-expense-repository.js'
 import { CreateVariableExpenseUseCase } from './create-variable-expense.js'
 import { UpdateVariableExpenseUseCase } from './update-variable-expense.js'
@@ -70,6 +69,6 @@ describe('Update variable expense use case', () => {
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: false,
 			}),
-		).rejects.toThrow(BadRequestError)
+		).rejects.toThrow('Already exists a variable expense with name: Netflix and month: 2026-01')
 	})
 })

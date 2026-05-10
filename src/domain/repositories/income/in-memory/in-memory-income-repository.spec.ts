@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { Income } from '@/domain/entities/income/income.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryIncomeRepository } from './in-memory-income-repository.js'
 
 describe('In memory income repository', () => {
@@ -300,6 +299,6 @@ describe('In memory income repository', () => {
 
 	it('should throw if trying to delete a non-existent income', async () => {
 		const repository = new InMemoryIncomeRepository()
-		await expect(repository.delete('non-existent-id')).rejects.toThrow(ResourceNotFoundError)
+		await expect(repository.delete('non-existent-id')).rejects.toThrow('Income not found with id: non-existent-id')
 	})
 })

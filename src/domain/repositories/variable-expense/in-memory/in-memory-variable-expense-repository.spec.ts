@@ -2,7 +2,6 @@ import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryVariableExpenseRepository } from './in-memory-variable-expense-repository.js'
 
 describe('In memory variable expense repository', () => {
@@ -457,6 +456,6 @@ describe('In memory variable expense repository', () => {
 
 	it('should throw if trying to delete a non-existent variable expense', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
-		await expect(repository.delete('non-existent-id')).rejects.toThrow(ResourceNotFoundError)
+		await expect(repository.delete('non-existent-id')).rejects.toThrow('Expense not found with id: non-existent-id')
 	})
 })

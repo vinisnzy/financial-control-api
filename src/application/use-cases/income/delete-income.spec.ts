@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryIncomeRepository } from '@/domain/repositories/income/in-memory/in-memory-income-repository.js'
 import { CreateIncomeUseCase } from './create-income.js'
 import { DeleteIncomeUseCase } from './delete-income.js'

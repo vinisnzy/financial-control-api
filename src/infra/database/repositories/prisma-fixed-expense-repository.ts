@@ -1,6 +1,6 @@
+import { httpErrors } from '@fastify/sensible'
 import type { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { CreateFixedExpenseInput } from '@/domain/repositories/fixed-expense/dtos/create-fixed-expense-input.dto.js'
 import type { FixedExpenseRepository } from '@/domain/repositories/fixed-expense/fixed-expense-repository.js'
 import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
@@ -90,7 +90,7 @@ export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+				throw httpErrors.notFound(`Expense not found with id: ${expense.id}`)
 			}
 		}
 	}
@@ -109,7 +109,7 @@ export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
+				throw httpErrors.notFound(`Expense not found with id: ${id}`)
 			}
 		}
 	}

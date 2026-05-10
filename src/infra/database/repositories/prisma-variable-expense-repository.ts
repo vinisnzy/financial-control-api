@@ -1,6 +1,6 @@
+import { httpErrors } from '@fastify/sensible'
 import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
 import type { CreateVariableExpenseInput } from '@/domain/repositories/variable-expense/dtos/create-variable-expense-input.dto.js'
 import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
@@ -89,7 +89,7 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
+				throw httpErrors.notFound(`Expense not found with id: ${expense.id}`)
 			}
 		}
 	}
@@ -108,7 +108,7 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 			})
 		} catch (e) {
 			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
+				throw httpErrors.notFound(`Expense not found with id: ${id}`)
 			}
 		}
 	}

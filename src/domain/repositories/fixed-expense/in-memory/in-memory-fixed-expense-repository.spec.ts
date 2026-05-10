@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 
 import { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
-import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
 import { InMemoryFixedExpenseRepository } from './in-memory-fixed-expense-repository.js'
 
 describe('In memory fixed expense repository', () => {
@@ -505,6 +504,6 @@ describe('In memory fixed expense repository', () => {
 
 	it('should throw if trying to delete a non-existent expense', async () => {
 		const repository = new InMemoryFixedExpenseRepository()
-		await expect(repository.delete('non-existent-id')).rejects.toThrow(ResourceNotFoundError)
+		await expect(repository.delete('non-existent-id')).rejects.toThrow('Expense not found with id: non-existent-id')
 	})
 })
