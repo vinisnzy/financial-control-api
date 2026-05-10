@@ -18,7 +18,7 @@ describe('Create variable expense use case', () => {
 			date,
 		})
 
-		expect(await repository.findAll()).toHaveLength(1)
+		expect((await repository.findAll()).total).toBe(1)
 		const all = await repository.findByMonth('2026-02')
 		expect(all.some((e) => e.name === 'Supermarket' && e.date === date)).toBe(true)
 	})
@@ -43,6 +43,6 @@ describe('Create variable expense use case', () => {
 			necessary: true,
 			date: new Date(Date.UTC(2026, 2, 10)),
 		})
-		expect(await repository.findAll()).toHaveLength(2)
+		expect((await repository.findAll()).total).toBe(2)
 	})
 })

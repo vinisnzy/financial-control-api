@@ -1,8 +1,14 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { fixedExpenseEntityToResponse } from '@/infra/http/mappers/fixed-expense-to-response.js'
 import { container } from '@/main/container.js'
+import type { paginationParamRequest } from '../../schemas/pagination-param.schema.js'
 
-export async function findAllFixedExpenseController(_: FastifyRequest, reply: FastifyReply) {
-	const expenses = await container.findAllFixedExpenses.execute()
-	reply.send(expenses.map((e) => fixedExpenseEntityToResponse(e)))
+type RequestType = {
+	Querystring: paginationParamRequest
+}
+
+export async function findAllFixedExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+	const { page, limit } = request.query
+	const result = await container.findAllFixedExpenses.execute({ page, limit })
+	reply.send({ ...result, data: result.data.map((i) => fixedExpenseEntityToResponse(i)) })
 }

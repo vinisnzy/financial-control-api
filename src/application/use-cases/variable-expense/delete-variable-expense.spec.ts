@@ -27,7 +27,7 @@ describe('Delete variable expense use case', () => {
 		await deleteVariableExpense.execute(expense.id)
 
 		expect((await repository.findByMonth('2026-02')).find((e) => e.name === 'Supermarket')).toBeUndefined()
-		expect(await repository.findAll()).toHaveLength(0)
+		expect((await repository.findAll()).total).toBe(0)
 	})
 
 	it('should not throw when deleting a non-existent variable expense', async () => {

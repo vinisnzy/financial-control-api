@@ -1,8 +1,14 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { incomeEntityToResponse } from '@/infra/http/mappers/income-to-response.js'
 import { container } from '@/main/container.js'
+import type { paginationParamRequest } from '../../schemas/pagination-param.schema.js'
 
-export async function findAllIncomesController(_: FastifyRequest, reply: FastifyReply) {
-	const incomes = await container.findAllIncomes.execute()
-	reply.send(incomes.map((i) => incomeEntityToResponse(i)))
+type RequestType = {
+	Querystring: paginationParamRequest
+}
+
+export async function findAllIncomesController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+	const { page, limit } = request.query
+	const result = await container.findAllIncomes.execute({ page, limit })
+	reply.send({ ...result, data: result.data.map((i) => incomeEntityToResponse(i)) })
 }

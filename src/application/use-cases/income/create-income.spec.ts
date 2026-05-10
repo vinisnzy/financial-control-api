@@ -13,7 +13,7 @@ describe('Create income use case', () => {
 			amount: 2000.0,
 		})
 
-		expect(await repository.findAll()).toHaveLength(1)
+		expect((await repository.findAll()).total).toBe(1)
 		expect(await repository.findByNameAndMonth('Salary', '2026-02')).not.toBeNull()
 	})
 
@@ -36,7 +36,7 @@ describe('Create income use case', () => {
 
 		await createIncome.execute({ ...request, month: '2026-03' })
 
-		expect(await repository.findAll()).toHaveLength(2)
+		expect((await repository.findAll()).total).toBe(2)
 		expect(await repository.findByNameAndMonth('Salary', '2026-03')).not.toBeNull()
 	})
 
@@ -49,7 +49,7 @@ describe('Create income use case', () => {
 
 		await createIncome.execute({ ...request, name: 'Bônus' })
 
-		expect(await repository.findAll()).toHaveLength(2)
+		expect((await repository.findAll()).total).toBe(2)
 		expect(await repository.findByNameAndMonth('Bônus', '2026-02')).not.toBeNull()
 	})
 })

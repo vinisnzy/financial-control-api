@@ -12,10 +12,33 @@ describe('Find all incomes use case', () => {
 		await createIncome.execute({ name: 'Salary', month: '2026-02', amount: 2000 })
 		await createIncome.execute({ name: 'Bonus', month: '2026-03', amount: 500 })
 
-		const all = await findAll.execute()
-		expect(all).toHaveLength(2)
-		const names = all.map((i) => i.name)
+		const result = await findAll.execute()
+		expect(result.data).toHaveLength(2)
+		expect(result.total).toBe(2)
+		const names = result.data.map((i) => i.name)
 		expect(names).toContain('Salary')
 		expect(names).toContain('Bonus')
+	})
+
+	it('should paginate incomes', async () => {
+		const repository = new InMemoryIncomeRepository()
+		const createIncome = new CreateIncomeUseCase(repository)
+		const findAll = new FindAllIncomesUseCase(repository)
+
+		for (let i = 1; i <= 5; i++) {
+			await createIncome.execute({ name: `Income ${i}`, month: '2026-02', amount: i * 100 })
+		}
+
+		const page1 = await findAll.execute({ page: 1, limit: 2 })
+		expect(page1.data).toHaveLength(2)
+		expect(page1.total).toBe(5)
+		expect(page1.page).toBe(1)
+		expect(page1.limit).toBe(2)
+
+		const page2 = await findAll.execute({ page: 2, limit: 2 })
+		expect(page2.data).toHaveLength(2)
+
+		const page3 = await findAll.execute({ page: 3, limit: 2 })
+		expect(page3.data).toHaveLength(1)
 	})
 })

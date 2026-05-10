@@ -1,8 +1,14 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { variableExpenseEntityToResponse } from '@/infra/http/mappers/variable-expense-to-response.js'
 import { container } from '@/main/container.js'
+import type { paginationParamRequest } from '../../schemas/pagination-param.schema.js'
 
-export async function findAllVariableExpensesController(_: FastifyRequest, reply: FastifyReply) {
-	const variableExpenses = await container.findAllVariableExpenses.execute()
-	reply.send(variableExpenses.map((e) => variableExpenseEntityToResponse(e)))
+type RequestType = {
+	Querystring: paginationParamRequest
+}
+
+export async function findAllVariableExpensesController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+	const { page, limit } = request.query
+	const result = await container.findAllVariableExpenses.execute({ page, limit })
+	reply.send({ ...result, data: result.data.map((e) => variableExpenseEntityToResponse(e)) })
 }

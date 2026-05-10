@@ -25,7 +25,7 @@ describe('Delete fixed expense use case', () => {
 		await deleteFixedExpense.execute(expense.id)
 
 		expect(await repository.findByNameAndMonth('Rent', '2026-02')).toBeNull()
-		expect(await repository.findAll()).toHaveLength(0)
+		expect((await repository.findAll()).total).toBe(0)
 	})
 
 	it('should throw when deleting a non-existent fixed expense', async () => {

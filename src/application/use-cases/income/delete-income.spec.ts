@@ -24,7 +24,7 @@ describe('Delete income use case', () => {
 		await deleteIncome.execute(income.id)
 
 		expect(await repository.findByNameAndMonth('Salary', '2026-02')).toBeNull()
-		expect(await repository.findAll()).toHaveLength(0)
+		expect((await repository.findAll()).total).toBe(0)
 	})
 
 	it('should throw when deleting a non-existent income', async () => {

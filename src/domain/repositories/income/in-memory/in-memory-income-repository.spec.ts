@@ -7,10 +7,11 @@ import { InMemoryIncomeRepository } from './in-memory-income-repository.js'
 describe('In memory income repository', () => {
 	it('should be return an empty list when find all incomes and there are no incomes', async () => {
 		const repository = new InMemoryIncomeRepository()
-		const incomes = await repository.findAll()
+		const result = await repository.findAll()
 
-		expect(incomes).toHaveLength(0)
-		expect(incomes).toEqual([])
+		expect(result.data).toHaveLength(0)
+		expect(result.data).toEqual([])
+		expect(result.total).toBe(0)
 	})
 
 	it('should be list all incomes', async () => {
@@ -29,9 +30,30 @@ describe('In memory income repository', () => {
 		await repository.create(income1)
 		await repository.create(income2)
 
-		const incomes = await repository.findAll()
+		const result = await repository.findAll()
 
-		expect(incomes).toHaveLength(2)
+		expect(result.data).toHaveLength(2)
+		expect(result.total).toBe(2)
+	})
+
+	it('should paginate incomes correctly', async () => {
+		const repository = new InMemoryIncomeRepository()
+
+		for (let i = 1; i <= 5; i++) {
+			await repository.create({ name: `Income ${i}`, month: '2026-02', amount: i * 100 })
+		}
+
+		const page1 = await repository.findAll({ page: 1, limit: 2 })
+		expect(page1.data).toHaveLength(2)
+		expect(page1.total).toBe(5)
+		expect(page1.page).toBe(1)
+		expect(page1.limit).toBe(2)
+
+		const page2 = await repository.findAll({ page: 2, limit: 2 })
+		expect(page2.data).toHaveLength(2)
+
+		const page3 = await repository.findAll({ page: 3, limit: 2 })
+		expect(page3.data).toHaveLength(1)
 	})
 
 	it('should be find income by id', async () => {
@@ -47,8 +69,8 @@ describe('In memory income repository', () => {
 			amount,
 		})
 
-		const incomes = await repository.findAll()
-		const id = incomes[0].id
+		const result = await repository.findAll()
+		const id = result.data[0].id
 
 		const response = await repository.findById(id)
 
@@ -204,8 +226,8 @@ describe('In memory income repository', () => {
 		const month = '2026-02'
 		const amount = 200.0
 
-		const incomes = await repository.findAll()
-		const id = incomes[0].id
+		const result = await repository.findAll()
+		const id = result.data[0].id
 
 		const income = new Income({
 			id,
@@ -246,9 +268,10 @@ describe('In memory income repository', () => {
 			amount: 200.0,
 		})
 
-		const incomes = await repository.findAll()
+		const result = await repository.findAll()
 
-		expect(incomes).toHaveLength(1)
+		expect(result.data).toHaveLength(1)
+		expect(result.total).toBe(1)
 	})
 
 	it('should be delete an income', async () => {
@@ -260,15 +283,16 @@ describe('In memory income repository', () => {
 			amount: 200.0,
 		})
 
-		const incomes = await repository.findAll()
-		const id = incomes[0].id
+		const result = await repository.findAll()
+		const id = result.data[0].id
 
 		await repository.delete(id)
 
-		const incomesAfterDelete = await repository.findAll()
+		const resultAfterDelete = await repository.findAll()
 
-		expect(incomesAfterDelete).toHaveLength(0)
-		expect(incomesAfterDelete).toEqual([])
+		expect(resultAfterDelete.data).toHaveLength(0)
+		expect(resultAfterDelete.data).toEqual([])
+		expect(resultAfterDelete.total).toBe(0)
 
 		const deletedIncome = await repository.findById(id)
 		expect(deletedIncome).toBeNull()
