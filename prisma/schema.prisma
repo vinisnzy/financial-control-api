@@ -7,12 +7,23 @@ datasource db {
   provider = "postgresql"
 }
 
+enum ExpenseCategory {
+  SUBSCRIPTION
+  INVESTMENT
+  TRANSPORT
+  FOOD
+  LEISURE
+}
+
 model Income {
   id     String  @id @default(uuid())
   name   String
   month  String
   amount Decimal @db.Decimal(10, 2)
+  userId String  @map("user_id")
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("incomes")
 }
 
@@ -23,7 +34,10 @@ model FixedExpense {
   amount    Decimal         @db.Decimal(10, 2)
   category  ExpenseCategory
   necessary Boolean         @default(false)
+  userId    String          @map("user_id")
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("fixed_expenses")
 }
 
@@ -35,14 +49,34 @@ model VariableExpense {
   category  ExpenseCategory
   necessary Boolean         @default(false)
   date      DateTime        @default(now())
+  userId    String          @map("user_id")
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("variable_expenses")
 }
 
-enum ExpenseCategory {
-  SUBSCRIPTION
-  INVESTMENT
-  TRANSPORT
-  FOOD
-  LEISURE
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  incomes          Income[]
+  fixedExpenses    FixedExpense[]
+  variableExpenses VariableExpense[]
+  refreshTokens    RefreshToken[]
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String   @map("user_id")
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
