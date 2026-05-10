@@ -12,11 +12,12 @@ import { createIncomeSchema } from '../schemas/income/create-income.schema.js'
 import { updateIncomeSchema } from '../schemas/income/update-income.schema.js'
 import { monthParamSchema } from '../schemas/month-param.schema.js'
 import { nameAndMonthParamSchema } from '../schemas/name-and-month-param.schema.js'
+import { paginationParamSchema } from '../schemas/pagination-param.schema.js'
 
 export async function incomeRoutes(app: FastifyInstance) {
 	app.post('/', { schema: { body: createIncomeSchema } }, createIncomeController)
 
-	app.get('/', findAllIncomesController)
+	app.get('/', { schema: { querystring: paginationParamSchema } }, findAllIncomesController)
 	app.get('/:id', { schema: { params: idParamSchema } }, findIncomeByIdController)
 	app.get('/month/:month', { schema: { params: monthParamSchema } }, findIncomeByMonthController)
 	app.get('/name/:name/month/:month', { schema: { params: nameAndMonthParamSchema } }, findIncomeByNameAndMonth)

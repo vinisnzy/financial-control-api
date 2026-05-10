@@ -15,11 +15,12 @@ import { createFixedExpenseSchema } from '../schemas/fixed-expense/create-fixed-
 import { updateFixedExpenseSchema } from '../schemas/fixed-expense/update-fixed-expense.schema.js'
 import { idParamSchema } from '../schemas/id-param.schema.js'
 import { monthParamSchema } from '../schemas/month-param.schema.js'
+import { paginationParamSchema } from '../schemas/pagination-param.schema.js'
 
 export async function fixedExpensesRoutes(app: FastifyInstance) {
 	app.post('/', { schema: { body: createFixedExpenseSchema } }, createFixedExpenseController)
 
-	app.get('/', findAllFixedExpenseController)
+	app.get('/', { schema: { querystring: paginationParamSchema } }, findAllFixedExpenseController)
 	app.get('/necessary', findAllNecessaryFixedExpensesController)
 	app.get(
 		'/necessary/month/:month',

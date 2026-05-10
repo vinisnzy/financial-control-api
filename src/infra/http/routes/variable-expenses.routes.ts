@@ -13,13 +13,14 @@ import { categoryAndMonthParamsSchema } from '../schemas/category-and-month-para
 import { categoryParamSchema } from '../schemas/category-param.schema.js'
 import { idParamSchema } from '../schemas/id-param.schema.js'
 import { monthParamSchema } from '../schemas/month-param.schema.js'
+import { paginationParamSchema } from '../schemas/pagination-param.schema.js'
 import { createVariableExpenseSchema } from '../schemas/variable-expense/create-variable-expense.schema.js'
 import { updateVariableExpenseSchema } from '../schemas/variable-expense/update-variable-expense.schema.js'
 
 export async function variableExpensesRoutes(app: FastifyInstance) {
 	app.post('/', { schema: { body: createVariableExpenseSchema } }, createVariableExpenseController)
 
-	app.get('/', findAllVariableExpensesController)
+	app.get('/', { schema: { querystring: paginationParamSchema } }, findAllVariableExpensesController)
 	app.get('/necessary', findAllNecessaryVariableExpensesController)
 	app.get(
 		'/necessary/month/:month',
