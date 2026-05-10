@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { InMemoryFixedExpenseRepository } from '@/domain/repositories/fixed-expense/in-memory/in-memory-fixed-expense-repository.js'
@@ -6,6 +7,7 @@ import { FindAllFixedExpensesUseCase } from './find-all-fixed-expenses.js'
 
 describe('Find all fixed expenses use case', () => {
 	it('should find all fixed expenses', async () => {
+		const userId = randomUUID()
 		const repository = new InMemoryFixedExpenseRepository()
 		const createFixedExpense = new CreateFixedExpenseUseCase(repository)
 		const findAll = new FindAllFixedExpensesUseCase(repository)
@@ -16,6 +18,7 @@ describe('Find all fixed expenses use case', () => {
 			amount: 1200,
 			category: ExpenseCategory.SUBSCRIPTION,
 			necessary: true,
+			userId,
 		})
 		await createFixedExpense.execute({
 			name: 'Internet',
@@ -23,9 +26,10 @@ describe('Find all fixed expenses use case', () => {
 			amount: 100,
 			category: ExpenseCategory.SUBSCRIPTION,
 			necessary: true,
+			userId,
 		})
 
-		const result = await findAll.execute({})
+		const result = await findAll.execute(userId, {})
 		expect(result.data).toHaveLength(2)
 		expect(result.total).toBe(2)
 		const names = result.data.map((e) => e.name)
@@ -34,6 +38,7 @@ describe('Find all fixed expenses use case', () => {
 	})
 
 	it('should paginate fixed expenses', async () => {
+		const userId = randomUUID()
 		const repository = new InMemoryFixedExpenseRepository()
 		const createFixedExpense = new CreateFixedExpenseUseCase(repository)
 		const findAll = new FindAllFixedExpensesUseCase(repository)
@@ -45,19 +50,60 @@ describe('Find all fixed expenses use case', () => {
 				amount: i * 100,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId,
 			})
 		}
 
-		const page1 = await findAll.execute({ page: 1, limit: 2 })
+		const page1 = await findAll.execute(userId, { page: 1, limit: 2 })
 		expect(page1.data).toHaveLength(2)
 		expect(page1.total).toBe(5)
 		expect(page1.page).toBe(1)
 		expect(page1.limit).toBe(2)
 
-		const page2 = await findAll.execute({ page: 2, limit: 2 })
+		const page2 = await findAll.execute(userId, { page: 2, limit: 2 })
 		expect(page2.data).toHaveLength(2)
 
-		const page3 = await findAll.execute({ page: 3, limit: 2 })
+		const page3 = await findAll.execute(userId, { page: 3, limit: 2 })
 		expect(page3.data).toHaveLength(1)
+	})
+
+	it('lista apenas os registros do usuário autenticado', async () => {
+		const userId = randomUUID()
+		const otherUserId = randomUUID()
+		const repository = new InMemoryFixedExpenseRepository()
+		const createFixedExpense = new CreateFixedExpenseUseCase(repository)
+		const findAll = new FindAllFixedExpensesUseCase(repository)
+
+		await createFixedExpense.execute({
+			name: 'Rent',
+			month: '2026-02',
+			amount: 1200,
+			category: ExpenseCategory.SUBSCRIPTION,
+			necessary: true,
+			userId,
+		})
+		await createFixedExpense.execute({
+			name: 'Internet',
+			month: '2026-02',
+			amount: 100,
+			category: ExpenseCategory.SUBSCRIPTION,
+			necessary: true,
+			userId,
+		})
+		await createFixedExpense.execute({
+			name: 'Other Expense',
+			month: '2026-02',
+			amount: 200,
+			category: ExpenseCategory.SUBSCRIPTION,
+			necessary: true,
+			userId: otherUserId,
+		})
+
+		const result = await findAll.execute(userId, {})
+		expect(result.total).toBe(2)
+		const names = result.data.map((e) => e.name)
+		expect(names).toContain('Rent')
+		expect(names).toContain('Internet')
+		expect(names).not.toContain('Other Expense')
 	})
 })

@@ -18,6 +18,8 @@ const fixedExpenseMock = {
 	necessary: true,
 }
 
+const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+
 describe('GET /fixed-expenses/:id', () => {
 	let app: ReturnType<typeof buildApp>
 
@@ -25,6 +27,9 @@ describe('GET /fixed-expenses/:id', () => {
 
 	beforeAll(async () => {
 		app = buildApp()
+		app.addHook('onRequest', async (request) => {
+			request.user = { sub: USER_ID }
+		})
 		await app.ready()
 	})
 

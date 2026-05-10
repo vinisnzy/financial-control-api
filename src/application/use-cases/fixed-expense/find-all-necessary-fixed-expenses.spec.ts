@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { InMemoryFixedExpenseRepository } from '@/domain/repositories/fixed-expense/in-memory/in-memory-fixed-expense-repository.js'
@@ -6,6 +7,7 @@ import { FindAllNecessaryFixedExpensesUseCase } from './find-all-necessary-fixed
 
 describe('Find all necessary fixed expenses use case', () => {
 	it('should find all necessary fixed expenses', async () => {
+		const userId = randomUUID()
 		const repository = new InMemoryFixedExpenseRepository()
 		const createFixedExpense = new CreateFixedExpenseUseCase(repository)
 		const findAllNecessary = new FindAllNecessaryFixedExpensesUseCase(repository)
@@ -16,6 +18,7 @@ describe('Find all necessary fixed expenses use case', () => {
 			amount: 1200,
 			category: ExpenseCategory.SUBSCRIPTION,
 			necessary: true,
+			userId,
 		})
 		await createFixedExpense.execute({
 			name: 'Internet',
@@ -23,6 +26,7 @@ describe('Find all necessary fixed expenses use case', () => {
 			amount: 100,
 			category: ExpenseCategory.SUBSCRIPTION,
 			necessary: true,
+			userId,
 		})
 		await createFixedExpense.execute({
 			name: 'Gym',
@@ -30,12 +34,42 @@ describe('Find all necessary fixed expenses use case', () => {
 			amount: 80,
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
+			userId,
 		})
 
-		const necessary = await findAllNecessary.execute()
+		const necessary = await findAllNecessary.execute(userId)
 		expect(necessary).toHaveLength(2)
 		const names = necessary.map((e) => e.name)
 		expect(names).toContain('Rent')
 		expect(names).toContain('Internet')
+	})
+
+	it('lista apenas os registros do usuário autenticado', async () => {
+		const userId = randomUUID()
+		const otherUserId = randomUUID()
+		const repository = new InMemoryFixedExpenseRepository()
+		const createFixedExpense = new CreateFixedExpenseUseCase(repository)
+		const findAllNecessary = new FindAllNecessaryFixedExpensesUseCase(repository)
+
+		await createFixedExpense.execute({
+			name: 'Rent',
+			month: '2026-02',
+			amount: 1200,
+			category: ExpenseCategory.SUBSCRIPTION,
+			necessary: true,
+			userId,
+		})
+		await createFixedExpense.execute({
+			name: 'Other Rent',
+			month: '2026-02',
+			amount: 800,
+			category: ExpenseCategory.SUBSCRIPTION,
+			necessary: true,
+			userId: otherUserId,
+		})
+
+		const result = await findAllNecessary.execute(userId)
+		expect(result).toHaveLength(1)
+		expect(result[0].name).toBe('Rent')
 	})
 })

@@ -9,6 +9,8 @@ vi.mock('@/main/container.js', () => ({
 	},
 }))
 
+const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+
 describe('PUT /fixed-expenses/:id', () => {
 	let app: ReturnType<typeof buildApp>
 
@@ -17,6 +19,9 @@ describe('PUT /fixed-expenses/:id', () => {
 
 	beforeAll(async () => {
 		app = buildApp()
+		app.addHook('onRequest', async (request) => {
+			request.user = { sub: USER_ID }
+		})
 		await app.ready()
 	})
 

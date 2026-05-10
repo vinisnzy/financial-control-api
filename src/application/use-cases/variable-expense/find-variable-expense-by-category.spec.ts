@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { InMemoryVariableExpenseRepository } from '@/domain/repositories/variable-expense/in-memory/in-memory-variable-expense-repository.js'
@@ -6,6 +7,7 @@ import { FindVariableExpensesByCategoryUseCase } from './find-variable-expense-b
 
 describe('Find variable expenses by category use case', () => {
 	it('should find variable expenses by category', async () => {
+		const userId = randomUUID()
 		const repository = new InMemoryVariableExpenseRepository()
 		const createVariableExpense = new CreateVariableExpenseUseCase(repository)
 		const findByCategory = new FindVariableExpensesByCategoryUseCase(repository)
@@ -17,6 +19,7 @@ describe('Find variable expenses by category use case', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId,
 		})
 		await createVariableExpense.execute({
 			name: 'Cinema',
@@ -25,14 +28,46 @@ describe('Find variable expenses by category use case', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 2, 11)),
+			userId,
 		})
 
-		const food = await findByCategory.execute(ExpenseCategory.FOOD)
+		const food = await findByCategory.execute(ExpenseCategory.FOOD, userId)
 		expect(food).toHaveLength(1)
 		expect(food[0].name).toBe('Supermarket')
 
-		const leisure = await findByCategory.execute(ExpenseCategory.LEISURE)
+		const leisure = await findByCategory.execute(ExpenseCategory.LEISURE, userId)
 		expect(leisure).toHaveLength(1)
 		expect(leisure[0].name).toBe('Cinema')
+	})
+
+	it('lista apenas os registros do usuário autenticado', async () => {
+		const userId = randomUUID()
+		const otherUserId = randomUUID()
+		const repository = new InMemoryVariableExpenseRepository()
+		const createVariableExpense = new CreateVariableExpenseUseCase(repository)
+		const findByCategory = new FindVariableExpensesByCategoryUseCase(repository)
+
+		await createVariableExpense.execute({
+			name: 'Supermarket',
+			month: '2026-02',
+			amount: 300,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: new Date(Date.UTC(2026, 1, 10)),
+			userId,
+		})
+		await createVariableExpense.execute({
+			name: 'Other Supermarket',
+			month: '2026-02',
+			amount: 200,
+			category: ExpenseCategory.FOOD,
+			necessary: true,
+			date: new Date(Date.UTC(2026, 1, 12)),
+			userId: otherUserId,
+		})
+
+		const result = await findByCategory.execute(ExpenseCategory.FOOD, userId)
+		expect(result).toHaveLength(1)
+		expect(result[0].name).toBe('Supermarket')
 	})
 })

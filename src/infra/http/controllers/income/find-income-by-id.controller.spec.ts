@@ -11,11 +11,16 @@ vi.mock('@/main/container.js', () => ({
 
 const incomeMock = { id: '123e4567-e89b-12d3-a456-426614174000', name: 'Salary', month: '2026-05', amount: 5000 }
 
+const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+
 describe('GET /incomes/:id', () => {
 	let app: ReturnType<typeof buildApp>
 
 	beforeAll(async () => {
 		app = buildApp()
+		app.addHook('onRequest', async (request) => {
+			request.user = { sub: USER_ID }
+		})
 		await app.ready()
 	})
 

@@ -4,10 +4,12 @@ import { VariableExpense } from '@/domain/entities/variable-expense/variable-exp
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { InMemoryVariableExpenseRepository } from './in-memory-variable-expense-repository.js'
 
+const USER_ID = randomUUID()
+
 describe('In memory variable expense repository', () => {
 	it('should return an empty list when find all expenses and there are no expenses', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
-		const result = await repository.findAll()
+		const result = await repository.findAll(USER_ID)
 
 		expect(result.data).toHaveLength(0)
 		expect(result.data).toEqual([])
@@ -24,6 +26,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -32,11 +35,12 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
 
-		const result = await repository.findAll()
+		const result = await repository.findAll(USER_ID)
 
 		expect(result.data).toHaveLength(2)
 		expect(result.total).toBe(2)
@@ -53,19 +57,20 @@ describe('In memory variable expense repository', () => {
 				category: ExpenseCategory.FOOD,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, i)),
-			})
+				userId: USER_ID,
+			}, USER_ID)
 		}
 
-		const page1 = await repository.findAll({ page: 1, limit: 2 })
+		const page1 = await repository.findAll(USER_ID, { page: 1, limit: 2 })
 		expect(page1.data).toHaveLength(2)
 		expect(page1.total).toBe(5)
 		expect(page1.page).toBe(1)
 		expect(page1.limit).toBe(2)
 
-		const page2 = await repository.findAll({ page: 2, limit: 2 })
+		const page2 = await repository.findAll(USER_ID, { page: 2, limit: 2 })
 		expect(page2.data).toHaveLength(2)
 
-		const page3 = await repository.findAll({ page: 3, limit: 2 })
+		const page3 = await repository.findAll(USER_ID, { page: 3, limit: 2 })
 		expect(page3.data).toHaveLength(1)
 	})
 
@@ -86,12 +91,13 @@ describe('In memory variable expense repository', () => {
 			category,
 			necessary,
 			date,
-		})
+			userId: USER_ID,
+		}, USER_ID)
 
-		const result = await repository.findAll()
+		const result = await repository.findAll(USER_ID)
 		const id = result.data[0].id
 
-		const response = await repository.findById(id)
+		const response = await repository.findById(id, USER_ID)
 
 		expect(response).not.toBeNull()
 
@@ -110,7 +116,7 @@ describe('In memory variable expense repository', () => {
 
 		const id = randomUUID().toString()
 
-		const response = await repository.findById(id)
+		const response = await repository.findById(id, USER_ID)
 
 		expect(response).toBeNull()
 	})
@@ -125,18 +131,19 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
-		})
+			userId: USER_ID,
+		}, USER_ID)
 
 		const otherId = randomUUID().toString()
 
-		const response = await repository.findById(otherId)
+		const response = await repository.findById(otherId, USER_ID)
 
 		expect(response).toBeNull()
 	})
 
 	it('should return an empty list when find expenses by month and there are no expenses', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
-		const expenses = await repository.findByMonth('2026-02')
+		const expenses = await repository.findByMonth('2026-02', USER_ID)
 
 		expect(expenses).toHaveLength(0)
 		expect(expenses).toEqual([])
@@ -152,6 +159,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -160,6 +168,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 11)),
+			userId: USER_ID,
 		}
 		const expense3 = {
 			name: 'Supermarket January',
@@ -168,12 +177,13 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 11)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
-		await repository.create(expense3)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
+		await repository.create(expense3, USER_ID)
 
-		const expenses = await repository.findByMonth('2026-02')
+		const expenses = await repository.findByMonth('2026-02', USER_ID)
 
 		expect(expenses.every((e) => e.month === '2026-02')).toBe(true)
 		expect(expenses).toHaveLength(2)
@@ -189,6 +199,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -197,11 +208,12 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 11)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
 
-		const expenses = await repository.findByCategory(ExpenseCategory.FOOD)
+		const expenses = await repository.findByCategory(ExpenseCategory.FOOD, USER_ID)
 
 		expect(expenses.every((e) => e.category === ExpenseCategory.FOOD)).toBe(true)
 		expect(expenses).toHaveLength(1)
@@ -217,6 +229,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -225,11 +238,12 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
 
-		const expenses = await repository.findAllNecessary()
+		const expenses = await repository.findAllNecessary(USER_ID)
 
 		expect(expenses.every((e) => e.necessary)).toBe(true)
 		expect(expenses).toHaveLength(1)
@@ -245,6 +259,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -253,6 +268,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 11)),
+			userId: USER_ID,
 		}
 		const expense3 = {
 			name: 'Supermarket January',
@@ -261,12 +277,13 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
-		await repository.create(expense3)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
+		await repository.create(expense3, USER_ID)
 
-		const expenses = await repository.findNecessaryByMonth('2026-02')
+		const expenses = await repository.findNecessaryByMonth('2026-02', USER_ID)
 
 		expect(expenses.every((e) => e.necessary && e.month === '2026-02')).toBe(true)
 		expect(expenses).toHaveLength(1)
@@ -282,10 +299,11 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
+		await repository.create(expense1, USER_ID)
 
-		const expenses = await repository.findNecessaryByMonth('2026-02')
+		const expenses = await repository.findNecessaryByMonth('2026-02', USER_ID)
 		expect(expenses).toHaveLength(0)
 		expect(expenses).toEqual([])
 	})
@@ -300,6 +318,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 		const expense2 = {
 			name: 'Cinema',
@@ -308,6 +327,7 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.LEISURE,
 			necessary: false,
 			date: new Date(Date.UTC(2026, 1, 11)),
+			userId: USER_ID,
 		}
 		const expense3 = {
 			name: 'Supermarket January',
@@ -316,12 +336,13 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
-		await repository.create(expense2)
-		await repository.create(expense3)
+		await repository.create(expense1, USER_ID)
+		await repository.create(expense2, USER_ID)
+		await repository.create(expense3, USER_ID)
 
-		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.FOOD, '2026-02')
+		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.FOOD, '2026-02', USER_ID)
 
 		expect(expenses.every((e) => e.category === ExpenseCategory.FOOD && e.month === '2026-02')).toBe(true)
 		expect(expenses).toHaveLength(1)
@@ -337,10 +358,11 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
-		await repository.create(expense1)
+		await repository.create(expense1, USER_ID)
 
-		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.LEISURE, '2026-01')
+		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.LEISURE, '2026-01', USER_ID)
 		expect(expenses).toHaveLength(0)
 		expect(expenses).toEqual([])
 	})
@@ -355,8 +377,9 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
-		})
-		const result = await repository.findAll()
+			userId: USER_ID,
+		}, USER_ID)
+		const result = await repository.findAll(USER_ID)
 		const id = result.data[0].id
 
 		const name = 'Supermarket Updated'
@@ -374,10 +397,11 @@ describe('In memory variable expense repository', () => {
 			category,
 			necessary,
 			date,
+			userId: USER_ID,
 		})
 
-		await repository.save(expense)
-		const savedExpense = await repository.findById(id)
+		await repository.save(expense, USER_ID)
+		const savedExpense = await repository.findById(id, USER_ID)
 
 		if (!savedExpense) throw new Error('Expense not found in test')
 		expect(savedExpense.id).toEqual(id)
@@ -400,9 +424,10 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		})
 
-		await expect(repository.save(expense)).rejects.toThrow()
+		await expect(repository.save(expense, USER_ID)).rejects.toThrow()
 	})
 
 	it('should create an expense', async () => {
@@ -415,11 +440,12 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 
-		await repository.create(expense)
+		await repository.create(expense, USER_ID)
 
-		const result = await repository.findAll()
+		const result = await repository.findAll(USER_ID)
 
 		expect(result.data).toHaveLength(1)
 		expect(result.total).toBe(1)
@@ -435,27 +461,28 @@ describe('In memory variable expense repository', () => {
 			category: ExpenseCategory.FOOD,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 10)),
+			userId: USER_ID,
 		}
 
-		await repository.create(expense)
+		await repository.create(expense, USER_ID)
 
-		const result = await repository.findAll()
+		const result = await repository.findAll(USER_ID)
 		const id = result.data[0].id
 
-		await repository.delete(id)
+		await repository.delete(id, USER_ID)
 
-		const resultAfterDelete = await repository.findAll()
+		const resultAfterDelete = await repository.findAll(USER_ID)
 
 		expect(resultAfterDelete.data).toHaveLength(0)
 		expect(resultAfterDelete.data).toEqual([])
 		expect(resultAfterDelete.total).toBe(0)
 
-		const deletedExpense = await repository.findById(id)
+		const deletedExpense = await repository.findById(id, USER_ID)
 		expect(deletedExpense).toBeNull()
 	})
 
 	it('should throw if trying to delete a non-existent variable expense', async () => {
 		const repository = new InMemoryVariableExpenseRepository()
-		await expect(repository.delete('non-existent-id')).rejects.toThrow('Expense not found with id: non-existent-id')
+		await expect(repository.delete('non-existent-id', USER_ID)).rejects.toThrow('Expense not found with id: non-existent-id')
 	})
 })

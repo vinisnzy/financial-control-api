@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { FixedExpense } from './fixed-expense.js'
 
+const USER_ID = randomUUID()
+
 describe('Fixed expense entity', () => {
 	it('should be create an fixed expense', () => {
 		const fixedExpense = new FixedExpense({
@@ -14,6 +16,7 @@ describe('Fixed expense entity', () => {
 			amount: 45.0,
 			category: ExpenseCategory.SUBSCRIPTION,
 			necessary: true,
+			userId: USER_ID,
 		})
 
 		expect(fixedExpense).toBeInstanceOf(FixedExpense)
@@ -33,6 +36,7 @@ describe('Fixed expense entity', () => {
 				amount: 45.0,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -46,6 +50,7 @@ describe('Fixed expense entity', () => {
 				amount: 45.0,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -59,6 +64,7 @@ describe('Fixed expense entity', () => {
 				amount: -45.0,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -72,6 +78,7 @@ describe('Fixed expense entity', () => {
 				amount: 0,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -85,6 +92,7 @@ describe('Fixed expense entity', () => {
 				amount: 45.123,
 				category: ExpenseCategory.SUBSCRIPTION,
 				necessary: true,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})

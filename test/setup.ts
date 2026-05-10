@@ -8,7 +8,7 @@ export const prisma = new PrismaClient({ adapter })
 
 afterEach(async () => {
 	await prisma.$executeRawUnsafe(
-		'TRUNCATE TABLE "incomes", "fixed_expenses", "variable_expenses" RESTART IDENTITY CASCADE',
+		'TRUNCATE TABLE "users", "incomes", "fixed_expenses", "variable_expenses" RESTART IDENTITY CASCADE',
 	)
 })
 

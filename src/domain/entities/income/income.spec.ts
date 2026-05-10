@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
 import { Income } from './income.js'
 
+const USER_ID = randomUUID()
+
 describe('Income entity', () => {
 	it('should be create an income', () => {
 		const income = new Income({
@@ -9,6 +11,7 @@ describe('Income entity', () => {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
+			userId: USER_ID,
 		})
 
 		expect(income).toBeInstanceOf(Income)
@@ -23,6 +26,7 @@ describe('Income entity', () => {
 				name: '',
 				month: '2026-02',
 				amount: 2000.0,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -34,6 +38,7 @@ describe('Income entity', () => {
 				name: 'Salary',
 				month: '',
 				amount: 2000.0,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -45,6 +50,7 @@ describe('Income entity', () => {
 				name: 'Salary',
 				month: '2026-02',
 				amount: -2000.0,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -56,6 +62,7 @@ describe('Income entity', () => {
 				name: 'Salary',
 				month: '2026-02',
 				amount: 0,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -67,6 +74,7 @@ describe('Income entity', () => {
 				name: 'Salary',
 				month: '2026-02',
 				amount: 2000.123,
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -77,6 +85,7 @@ describe('Income entity', () => {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
+			userId: USER_ID,
 		})
 
 		expect(() => {
@@ -90,6 +99,7 @@ describe('Income entity', () => {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
+			userId: USER_ID,
 		})
 
 		expect(() => {
@@ -103,6 +113,7 @@ describe('Income entity', () => {
 			name: 'Salary',
 			month: '2026-02',
 			amount: 2000.0,
+			userId: USER_ID,
 		})
 
 		expect(() => {

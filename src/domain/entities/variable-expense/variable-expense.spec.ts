@@ -5,6 +5,8 @@ import { describe, expect, it } from 'vitest'
 import { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { VariableExpense } from './variable-expense.js'
 
+const USER_ID = randomUUID()
+
 describe('Variable expense entity', () => {
 	it('should be create an variable expense', () => {
 		const variableExpense = new VariableExpense({
@@ -15,6 +17,7 @@ describe('Variable expense entity', () => {
 			category: ExpenseCategory.TRANSPORT,
 			necessary: true,
 			date: new Date(Date.UTC(2026, 1, 15)),
+			userId: USER_ID,
 		})
 
 		expect(variableExpense).toBeInstanceOf(VariableExpense)
@@ -35,6 +38,7 @@ describe('Variable expense entity', () => {
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, 15)),
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -49,6 +53,7 @@ describe('Variable expense entity', () => {
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, 15)),
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -63,6 +68,7 @@ describe('Variable expense entity', () => {
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, 15)),
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -77,6 +83,7 @@ describe('Variable expense entity', () => {
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, 15)),
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
@@ -91,6 +98,7 @@ describe('Variable expense entity', () => {
 				category: ExpenseCategory.TRANSPORT,
 				necessary: true,
 				date: new Date(Date.UTC(2026, 1, 15)),
+				userId: USER_ID,
 			})
 		}).toThrow()
 	})
