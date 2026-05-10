@@ -7,7 +7,7 @@ export const createIncomeSchema = z.object({
 	amount: z
 		.number()
 		.positive()
-		.refine((a) => hasMoreThanTwoDecimals(a), { message: 'Maximum 2 decimal places' }),
+		.refine((a) => !hasMoreThanTwoDecimals(a), { message: 'Maximum 2 decimal places' }),
 })
 
 export type CreateIncomeRequest = z.infer<typeof createIncomeSchema>

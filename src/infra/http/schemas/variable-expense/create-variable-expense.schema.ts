@@ -8,7 +8,7 @@ export const createVariableExpenseSchema = z.object({
 	amount: z
 		.number()
 		.positive()
-		.refine((a) => hasMoreThanTwoDecimals(a), { message: 'Maximum 2 decimal places' }),
+		.refine((a) => !hasMoreThanTwoDecimals(a), { message: 'Maximum 2 decimal places' }),
 	category: z.enum(ExpenseCategory),
 	necessary: z.boolean(),
 	date: z.coerce.date().optional(),
