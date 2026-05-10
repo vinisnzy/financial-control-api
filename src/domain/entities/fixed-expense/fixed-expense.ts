@@ -9,6 +9,7 @@ interface FixedExpenseProps {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
+	userId: string
 }
 
 export class FixedExpense {
@@ -52,5 +53,9 @@ export class FixedExpense {
 
 	get necessary() {
 		return this.props.necessary
+	}
+
+	get userId() {
+		return this.props.userId
 	}
 }

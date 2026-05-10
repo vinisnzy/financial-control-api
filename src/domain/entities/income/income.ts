@@ -6,6 +6,7 @@ interface IncomeProps {
 	name: string
 	month: string
 	amount: number
+	userId: string
 }
 
 export class Income {
@@ -40,6 +41,10 @@ export class Income {
 
 	get amount() {
 		return this.props.amount
+	}
+
+	get userId() {
+		return this.props.userId
 	}
 
 	set name(name: string) {

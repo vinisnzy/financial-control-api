@@ -9,6 +9,7 @@ interface VariableExpenseRequest {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
+	userId: string
 	date?: Date
 }
 
@@ -19,6 +20,7 @@ interface VariableExpenseProps {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
+	userId: string
 	date: Date
 }
 
@@ -71,5 +73,9 @@ export class VariableExpense {
 
 	get date() {
 		return this.props.date
+	}
+
+	get userId() {
+		return this.props.userId
 	}
 }
