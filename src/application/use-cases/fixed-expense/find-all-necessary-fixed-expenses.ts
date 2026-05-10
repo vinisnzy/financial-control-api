@@ -6,7 +6,7 @@ type FindAllNecessaryFixedExpensesResponse = FixedExpense[]
 export class FindAllNecessaryFixedExpensesUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
-	async execute(): Promise<FindAllNecessaryFixedExpensesResponse> {
-		return this.repository.findAllNecessary()
+	async execute(userId: string): Promise<FindAllNecessaryFixedExpensesResponse> {
+		return this.repository.findAllNecessary(userId)
 	}
 }

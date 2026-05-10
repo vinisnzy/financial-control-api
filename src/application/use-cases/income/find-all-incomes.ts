@@ -7,7 +7,7 @@ type FindAllIncomesResponse = PaginatedResult<Income>
 export class FindAllIncomesUseCase {
 	constructor(private repository: IncomeRepository) {}
 
-	async execute(pagination?: PaginationInput): Promise<FindAllIncomesResponse> {
-		return this.repository.findAll(pagination)
+	async execute(userId: string, pagination?: PaginationInput): Promise<FindAllIncomesResponse> {
+		return this.repository.findAll(userId, pagination)
 	}
 }

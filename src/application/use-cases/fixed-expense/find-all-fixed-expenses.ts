@@ -7,7 +7,7 @@ type FindAllFixedExpensesResponse = PaginatedResult<FixedExpense>
 export class FindAllFixedExpensesUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
-	async execute(pagination: PaginationInput): Promise<FindAllFixedExpensesResponse> {
-		return this.repository.findAll(pagination)
+	async execute(userId: string, pagination: PaginationInput): Promise<FindAllFixedExpensesResponse> {
+		return this.repository.findAll(userId, pagination)
 	}
 }

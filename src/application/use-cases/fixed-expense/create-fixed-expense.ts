@@ -6,10 +6,10 @@ export class CreateFixedExpenseUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
 	async execute(request: CreateFixedExpenseInput): Promise<void> {
-		const { name, month } = request
-		if (await this.repository.findByNameAndMonth(name, month)) {
+		const { name, month, userId } = request
+		if (await this.repository.findByNameAndMonth(name, month, userId)) {
 			throw new BadRequestError(`Already exists an fixed expense with name: ${name} and month: ${month}`)
 		}
-		this.repository.create(request)
+		this.repository.create(request, userId)
 	}
 }

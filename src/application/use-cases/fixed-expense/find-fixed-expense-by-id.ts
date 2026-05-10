@@ -7,8 +7,8 @@ type FindFixedExpenseByIdResponse = FixedExpense
 export class FindFixedExpenseByIdUseCase {
 	constructor(private repository: FixedExpenseRepository) {}
 
-	async execute(id: string): Promise<FindFixedExpenseByIdResponse> {
-		const fixedExpense = await this.repository.findById(id)
+	async execute(id: string, userId: string): Promise<FindFixedExpenseByIdResponse> {
+		const fixedExpense = await this.repository.findById(id, userId)
 		if (!fixedExpense) {
 			throw new ResourceNotFoundError(`Fixed expense not found with id: ${id}`)
 		}

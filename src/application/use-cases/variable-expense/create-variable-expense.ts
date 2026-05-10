@@ -5,6 +5,7 @@ export class CreateVariableExpenseUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
 	async execute(request: CreateVariableExpenseInput): Promise<void> {
-		await this.repository.create(request)
+		const { userId } = request
+		await this.repository.create(request, userId)
 	}
 }

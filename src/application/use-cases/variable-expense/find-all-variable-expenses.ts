@@ -7,7 +7,7 @@ type FindAllVariableExpensesResponse = PaginatedResult<VariableExpense>
 export class FindAllVariableExpensesUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(pagination?: PaginationInput): Promise<FindAllVariableExpensesResponse> {
-		return this.repository.findAll(pagination)
+	async execute(userId: string, pagination?: PaginationInput): Promise<FindAllVariableExpensesResponse> {
+		return this.repository.findAll(userId, pagination)
 	}
 }

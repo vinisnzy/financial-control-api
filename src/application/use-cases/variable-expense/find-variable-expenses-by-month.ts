@@ -6,7 +6,7 @@ type FindVariableExpensesByMonthResponse = VariableExpense[]
 export class FindVariableExpensesByMonthUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(month: string): Promise<FindVariableExpensesByMonthResponse> {
-		return this.repository.findByMonth(month)
+	async execute(month: string, userId: string): Promise<FindVariableExpensesByMonthResponse> {
+		return this.repository.findByMonth(month, userId)
 	}
 }

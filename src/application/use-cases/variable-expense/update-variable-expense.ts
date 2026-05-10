@@ -6,17 +6,19 @@ import type { VariableExpenseRepository } from '@/domain/repositories/variable-e
 export class UpdateVariableExpenseUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(id: string, request: UpdateVariableExpenseInput): Promise<void> {
+	async execute(id: string, userId: string, request: UpdateVariableExpenseInput): Promise<void> {
 		const { name, month } = request
-		const alreadyExists = await this.repository.findByNameAndMonth(name, month)
+		const alreadyExists = await this.repository.findByNameAndMonth(name, month, userId)
 		if (alreadyExists) {
 			throw new BadRequestError(`Already exists a variable expense with name: ${name} and month: ${month}`)
 		}
 		await this.repository.save(
 			new VariableExpense({
 				id,
+				userId,
 				...request,
 			}),
+			userId,
 		)
 	}
 }

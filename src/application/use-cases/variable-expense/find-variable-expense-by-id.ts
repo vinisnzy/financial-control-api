@@ -7,8 +7,8 @@ type FindVariableExpenseByIdResponse = VariableExpense
 export class FindVariableExpenseByIdUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(id: string): Promise<FindVariableExpenseByIdResponse> {
-		const expense = await this.repository.findById(id)
+	async execute(id: string, userId: string): Promise<FindVariableExpenseByIdResponse> {
+		const expense = await this.repository.findById(id, userId)
 		if (!expense) {
 			throw new ResourceNotFoundError(`Variable expense not found with id: ${id}`)
 		}

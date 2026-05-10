@@ -7,7 +7,7 @@ type FindVariableExpensesByCategoryResponse = VariableExpense[]
 export class FindVariableExpensesByCategoryUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(category: ExpenseCategory): Promise<FindVariableExpensesByCategoryResponse> {
-		return this.repository.findByCategory(category)
+	async execute(category: ExpenseCategory, userId: string): Promise<FindVariableExpensesByCategoryResponse> {
+		return this.repository.findByCategory(category, userId)
 	}
 }

@@ -6,11 +6,11 @@ export class CreateIncomeUseCase {
 	constructor(private repository: IncomeRepository) {}
 
 	async execute(request: CreateIncomeInput): Promise<void> {
-		const { name, month } = request
-		const alreadyExists = await this.repository.findByNameAndMonth(name, month)
+		const { name, month, userId } = request
+		const alreadyExists = await this.repository.findByNameAndMonth(name, month, userId)
 		if (alreadyExists) {
 			throw new BadRequestError(`There is already a income with the name: ${name}, and the month: ${month}`)
 		}
-		this.repository.create(request)
+		this.repository.create(request, userId)
 	}
 }

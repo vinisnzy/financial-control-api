@@ -6,7 +6,7 @@ type FindAllNecessaryVariableExpensesResponse = VariableExpense[]
 export class FindAllNecessaryVariableExpensesUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(): Promise<FindAllNecessaryVariableExpensesResponse> {
-		return this.repository.findAllNecessary()
+	async execute(userId: string): Promise<FindAllNecessaryVariableExpensesResponse> {
+		return this.repository.findAllNecessary(userId)
 	}
 }
