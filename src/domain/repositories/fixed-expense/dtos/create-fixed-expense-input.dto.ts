@@ -6,4 +6,5 @@ export interface CreateFixedExpenseInput {
 	amount: number
 	category: ExpenseCategory
 	necessary: boolean
+	userId: string
 }

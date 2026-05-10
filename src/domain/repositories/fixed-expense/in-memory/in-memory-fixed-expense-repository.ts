@@ -9,59 +9,69 @@ import type { FixedExpenseRepository } from '../fixed-expense-repository.js'
 export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 	public expenses: FixedExpense[] = []
 
-	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<FixedExpense>> {
+	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<FixedExpense>> {
 		const page = pagination?.page ?? 1
 		const limit = pagination?.limit ?? 20
 
+		const filtered = this.expenses.filter((e) => e.userId === userId)
 		const start = (page - 1) * limit
 
 		return {
-			data: this.expenses.slice(start, start + limit),
-			total: this.expenses.length,
+			data: filtered.slice(start, start + limit),
+			total: filtered.length,
 			page,
 			limit,
 		}
 	}
-	async findById(id: string): Promise<FixedExpense | null> {
-		return this.expenses.find((e) => e.id === id) ?? null
+
+	async findById(id: string, userId: string): Promise<FixedExpense | null> {
+		return this.expenses.find((e) => e.id === id && e.userId === userId) ?? null
 	}
 
-	async findByNameAndMonth(name: string, month: string): Promise<FixedExpense | null> {
-		return this.expenses.find((e) => e.name === name && e.month === month) ?? null
+	async findByNameAndMonth(name: string, month: string, userId: string): Promise<FixedExpense | null> {
+		return this.expenses.find((e) => e.name === name && e.month === month && e.userId === userId) ?? null
 	}
 
-	async findByMonth(month: string): Promise<FixedExpense[]> {
-		return this.expenses.filter((e) => e.month === month)
+	async findByMonth(month: string, userId: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.month === month && e.userId === userId)
 	}
-	async findByCategory(category: ExpenseCategory): Promise<FixedExpense[]> {
-		return this.expenses.filter((e) => e.category === category)
+
+	async findByCategory(category: ExpenseCategory, userId: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.category === category && e.userId === userId)
 	}
-	async findByCategoryAndMonth(category: ExpenseCategory, month: string): Promise<FixedExpense[]> {
-		return this.expenses.filter((e) => e.month === month && e.category === category)
+
+	async findByCategoryAndMonth(category: ExpenseCategory, month: string, userId: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.month === month && e.category === category && e.userId === userId)
 	}
-	async findAllNecessary(): Promise<FixedExpense[]> {
-		return this.expenses.filter((e) => e.necessary)
+
+	async findAllNecessary(userId: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.necessary && e.userId === userId)
 	}
-	async findNecessaryByMonth(month: string): Promise<FixedExpense[]> {
-		return this.expenses.filter((e) => e.necessary && e.month === month)
+
+	async findNecessaryByMonth(month: string, userId: string): Promise<FixedExpense[]> {
+		return this.expenses.filter((e) => e.necessary && e.month === month && e.userId === userId)
 	}
-	async save(expense: FixedExpense): Promise<void> {
-		const index = this.expenses.findIndex((e) => e.id === expense.id)
+
+	async save(expense: FixedExpense, userId: string): Promise<void> {
+		const index = this.expenses.findIndex((e) => e.id === expense.id && e.userId === userId)
 		if (index === -1) {
 			throw new ResourceNotFoundError(`Expense not found with id: ${expense.id}`)
 		}
 
 		this.expenses[index] = expense
 	}
-	async create(data: CreateFixedExpenseInput): Promise<void> {
+
+	async create(data: CreateFixedExpenseInput, userId: string): Promise<void> {
 		const fixedExpense = new FixedExpense({
 			id: randomUUID().toString(),
 			...data,
+			userId,
 		})
 		this.expenses.push(fixedExpense)
 	}
-	async delete(id: string): Promise<void> {
-		const index = this.expenses.findIndex((e) => e.id === id)
+
+	async delete(id: string, userId: string): Promise<void> {
+		const index = this.expenses.findIndex((e) => e.id === id && e.userId === userId)
 		if (index === -1) {
 			throw new ResourceNotFoundError(`Expense not found with id: ${id}`)
 		}

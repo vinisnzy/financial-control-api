@@ -8,15 +8,15 @@ import { prisma } from '../lib/prisma.js'
 import { incomePrismaToEntity } from '../mapper/income-prisma-to-entity.js'
 
 export class PrismaIncomeRepository implements IncomeRepository {
-	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<Income>> {
+	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<Income>> {
 		const page = pagination?.page ?? 1
 		const limit = pagination?.limit ?? 20
 
 		const skip = (page - 1) * limit
 
 		const [incomes, total] = await prisma.$transaction([
-			prisma.income.findMany({ skip, take: limit }),
-			prisma.income.count(),
+			prisma.income.findMany({ where: { userId }, skip, take: limit }),
+			prisma.income.count({ where: { userId } }),
 		])
 
 		return {
@@ -26,31 +26,35 @@ export class PrismaIncomeRepository implements IncomeRepository {
 			limit,
 		}
 	}
-	async findById(id: string): Promise<Income | null> {
-		const income = await prisma.income.findUnique({
-			where: { id },
-		})
-		if (!income) {
-			return null
-		}
-		return incomePrismaToEntity(income)
-	}
-	async findByNameAndMonth(name: string, month: string): Promise<Income | null> {
+
+	async findById(id: string, userId: string): Promise<Income | null> {
 		const income = await prisma.income.findFirst({
-			where: { name, month },
+			where: { id, userId },
 		})
 		if (!income) {
 			return null
 		}
 		return incomePrismaToEntity(income)
 	}
-	async findByMonth(month: string): Promise<Income[]> {
+
+	async findByNameAndMonth(name: string, month: string, userId: string): Promise<Income | null> {
+		const income = await prisma.income.findFirst({
+			where: { name, month, userId },
+		})
+		if (!income) {
+			return null
+		}
+		return incomePrismaToEntity(income)
+	}
+
+	async findByMonth(month: string, userId: string): Promise<Income[]> {
 		const incomes = await prisma.income.findMany({
-			where: { month },
+			where: { month, userId },
 		})
 		return incomes.map((i) => incomePrismaToEntity(i))
 	}
-	async save(income: Income): Promise<void> {
+
+	async save(income: Income, userId: string): Promise<void> {
 		try {
 			await prisma.income.update({
 				where: { id: income.id },
@@ -58,6 +62,7 @@ export class PrismaIncomeRepository implements IncomeRepository {
 					name: income.name,
 					month: income.month,
 					amount: income.amount,
+					userId,
 				},
 			})
 		} catch (e) {
@@ -66,16 +71,15 @@ export class PrismaIncomeRepository implements IncomeRepository {
 			}
 		}
 	}
-	async create(data: CreateIncomeInput): Promise<void> {
-		await prisma.income.create({ data })
+
+	async create(data: CreateIncomeInput, userId: string): Promise<void> {
+		await prisma.income.create({ data: { ...data, userId } })
 	}
-	async delete(id: string): Promise<void> {
-		try {
-			await prisma.income.delete({ where: { id } })
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw httpErrors.notFound(`Income not found with id: ${id}`)
-			}
+
+	async delete(id: string, userId: string): Promise<void> {
+		const result = await prisma.income.deleteMany({ where: { id, userId } })
+		if (result.count === 0) {
+			throw httpErrors.notFound(`Income not found with id: ${id}`)
 		}
 	}
 }

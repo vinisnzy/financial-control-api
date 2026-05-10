@@ -10,15 +10,15 @@ import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
 import { variableExpensePrismaToEntity } from '../mapper/variable-expense-prisma-to-entity.js'
 
 export class PrismaVariableExpenseRepository implements VariableExpenseRepository {
-	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<VariableExpense>> {
+	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<VariableExpense>> {
 		const page = pagination?.page ?? 1
 		const limit = pagination?.limit ?? 20
 
 		const skip = (page - 1) * limit
 
 		const [variableExpenses, total] = await prisma.$transaction([
-			prisma.variableExpense.findMany({ skip, take: limit }),
-			prisma.variableExpense.count(),
+			prisma.variableExpense.findMany({ where: { userId }, skip, take: limit }),
+			prisma.variableExpense.count({ where: { userId } }),
 		])
 
 		return {
@@ -28,53 +28,61 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 			limit,
 		}
 	}
-	async findById(id: string): Promise<VariableExpense | null> {
-		const variableExpense = await prisma.variableExpense.findUnique({
-			where: { id },
+
+	async findById(id: string, userId: string): Promise<VariableExpense | null> {
+		const variableExpense = await prisma.variableExpense.findFirst({
+			where: { id, userId },
 		})
 		if (!variableExpense) {
 			return null
 		}
 		return variableExpensePrismaToEntity(variableExpense)
 	}
-	async findByMonth(month: string): Promise<VariableExpense[]> {
+
+	async findByMonth(month: string, userId: string): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({
-			where: { month },
+			where: { month, userId },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
-	async findByNameAndMonth(name: string, month: string): Promise<VariableExpense | null> {
+
+	async findByNameAndMonth(name: string, month: string, userId: string): Promise<VariableExpense | null> {
 		const variableExpense = await prisma.variableExpense.findFirst({
-			where: { name, month },
+			where: { name, month, userId },
 		})
 		if (!variableExpense) return null
 		return variableExpensePrismaToEntity(variableExpense)
 	}
-	async findByCategory(category: ExpenseCategory): Promise<VariableExpense[]> {
+
+	async findByCategory(category: ExpenseCategory, userId: string): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({
-			where: { category: toPrismaExpenseCategory(category) },
+			where: { category: toPrismaExpenseCategory(category), userId },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
-	async findByCategoryAndMonth(category: ExpenseCategory, month: string): Promise<VariableExpense[]> {
+
+	async findByCategoryAndMonth(category: ExpenseCategory, month: string, userId: string): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({
-			where: { category: toPrismaExpenseCategory(category), month },
+			where: { category: toPrismaExpenseCategory(category), month, userId },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
-	async findAllNecessary(): Promise<VariableExpense[]> {
+
+	async findAllNecessary(userId: string): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({
-			where: { necessary: true },
+			where: { necessary: true, userId },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
-	async findNecessaryByMonth(month: string): Promise<VariableExpense[]> {
+
+	async findNecessaryByMonth(month: string, userId: string): Promise<VariableExpense[]> {
 		const variableExpenses = await prisma.variableExpense.findMany({
-			where: { necessary: true, month },
+			where: { necessary: true, month, userId },
 		})
 		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
 	}
-	async save(expense: VariableExpense): Promise<void> {
+
+	async save(expense: VariableExpense, userId: string): Promise<void> {
 		try {
 			await prisma.variableExpense.update({
 				where: { id: expense.id },
@@ -85,6 +93,7 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 					category: toPrismaExpenseCategory(expense.category),
 					necessary: expense.necessary,
 					date: expense.date,
+					userId,
 				},
 			})
 		} catch (e) {
@@ -93,23 +102,21 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 			}
 		}
 	}
-	async create(data: CreateVariableExpenseInput): Promise<void> {
+
+	async create(data: CreateVariableExpenseInput, userId: string): Promise<void> {
 		await prisma.variableExpense.create({
 			data: {
 				...data,
 				category: toPrismaExpenseCategory(data.category),
+				userId,
 			},
 		})
 	}
-	async delete(id: string): Promise<void> {
-		try {
-			await prisma.variableExpense.delete({
-				where: { id },
-			})
-		} catch (e) {
-			if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2025') {
-				throw httpErrors.notFound(`Expense not found with id: ${id}`)
-			}
+
+	async delete(id: string, userId: string): Promise<void> {
+		const result = await prisma.variableExpense.deleteMany({ where: { id, userId } })
+		if (result.count === 0) {
+			throw httpErrors.notFound(`Expense not found with id: ${id}`)
 		}
 	}
 }
