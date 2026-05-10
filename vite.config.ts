@@ -17,7 +17,16 @@ export default defineConfig({
 				test: {
 					name: 'unit',
 					include: ['src/**/*.spec.ts'],
-					exclude: ['src/**/*.integration.spec.ts'],
+					exclude: ['src/**/*.integration.spec.ts', 'src/**/controllers/**/*.spec.ts'],
+					pool: 'forks',
+					fileParallelism: false,
+				},
+			},
+			{
+				resolve: { tsconfigPaths: true },
+				test: {
+					name: 'http',
+					include: ['src/**/controllers/**/*.spec.ts'],
 					pool: 'forks',
 					fileParallelism: false,
 				},

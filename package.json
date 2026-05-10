@@ -12,6 +12,7 @@
     "test:db:up": "docker compose up -d financial-control-db-test",
     "test:db:down": "docker compose down financial-control-db-test",
     "test:integration": "npm run test:db:up && vitest run --project integration",
+    "test:http": "vitest run --project http",
     "lint": "biome lint ./src",
     "format": "biome format --write ./src",
     "check": "biome check --write ./src"
