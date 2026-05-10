@@ -75,4 +75,17 @@ describe('Fixed expense entity', () => {
 			})
 		}).toThrow()
 	})
+
+	it('should not be able create an fixed expense with amount having more than two decimal places', () => {
+		expect(() => {
+			return new FixedExpense({
+				id: randomUUID().toString(),
+				month: '2026-02',
+				name: 'Internet',
+				amount: 45.123,
+				category: ExpenseCategory.SUBSCRIPTION,
+				necessary: true,
+			})
+		}).toThrow()
+	})
 })

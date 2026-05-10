@@ -60,6 +60,17 @@ describe('Income entity', () => {
 		}).toThrow()
 	})
 
+	it('should not be able to create a income with amount having more than two decimal places', () => {
+		expect(() => {
+			return new Income({
+				id: randomUUID().toString(),
+				name: 'Salary',
+				month: '2026-02',
+				amount: 2000.123,
+			})
+		}).toThrow()
+	})
+
 	it('should not be able to set a blank name to income', () => {
 		const income = new Income({
 			id: randomUUID().toString(),

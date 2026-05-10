@@ -80,4 +80,18 @@ describe('Variable expense entity', () => {
 			})
 		}).toThrow()
 	})
+
+	it('should not be able create an variable expense with amount having more than two decimal places', () => {
+		expect(() => {
+			return new VariableExpense({
+				id: randomUUID().toString(),
+				month: '2026-02',
+				name: 'Uber',
+				amount: 25.123,
+				category: ExpenseCategory.TRANSPORT,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 15)),
+			})
+		}).toThrow()
+	})
 })

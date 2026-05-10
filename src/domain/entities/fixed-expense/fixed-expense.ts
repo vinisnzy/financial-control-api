@@ -1,5 +1,6 @@
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { BadRequestError } from '@/domain/errors/bad-request-error.js'
+import { hasMoreThanTwoDecimals } from '@/utils/number-has-more-whan-two-decimals.js'
 
 interface FixedExpenseProps {
 	id: string
@@ -22,6 +23,9 @@ export class FixedExpense {
 		}
 		if (props.amount <= 0) {
 			throw new BadRequestError('Expense amount cannot be negative or zero')
+		}
+		if (hasMoreThanTwoDecimals(props.amount)) {
+			throw new BadRequestError('Expense amount cannot have more than two decimal places')
 		}
 		this.props = props
 	}

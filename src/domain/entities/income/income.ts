@@ -1,4 +1,5 @@
 import { BadRequestError } from '@/domain/errors/bad-request-error.js'
+import { hasMoreThanTwoDecimals } from '@/utils/number-has-more-whan-two-decimals.js'
 
 interface IncomeProps {
 	id: string
@@ -9,6 +10,22 @@ interface IncomeProps {
 
 export class Income {
 	private props: IncomeProps
+
+	constructor(props: IncomeProps) {
+		if (!props.name) {
+			throw new BadRequestError('Income name cannot be blank')
+		}
+		if (!props.month) {
+			throw new BadRequestError('Income month cannot be blank')
+		}
+		if (props.amount <= 0) {
+			throw new BadRequestError('Income amount cannot be negative or zero')
+		}
+		if (hasMoreThanTwoDecimals(props.amount)) {
+			throw new BadRequestError('Expense amount cannot have more than two decimal places')
+		}
+		this.props = props
+	}
 
 	get name() {
 		return this.props.name
@@ -37,18 +54,5 @@ export class Income {
 			throw new BadRequestError('Income amount cannot be negative or zero')
 		}
 		this.props.amount = amount
-	}
-
-	constructor(props: IncomeProps) {
-		if (!props.name) {
-			throw new BadRequestError('Income name cannot be blank')
-		}
-		if (!props.month) {
-			throw new BadRequestError('Income month cannot be blank')
-		}
-		if (props.amount <= 0) {
-			throw new BadRequestError('Income amount cannot be negative or zero')
-		}
-		this.props = props
 	}
 }
