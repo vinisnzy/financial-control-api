@@ -7,5 +7,6 @@ export function incomePrismaToEntity(income: IncomePrisma): Income {
 		name: income.name,
 		month: income.month,
 		amount: Number(income.amount),
+		userId: income.userId,
 	})
 }

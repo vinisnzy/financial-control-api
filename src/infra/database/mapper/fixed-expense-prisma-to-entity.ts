@@ -10,5 +10,6 @@ export function fixedExpensePrismaToEntity(fixedExpense: FixedExpensePrisma) {
 		amount: Number(fixedExpense.amount),
 		category: toDomainExpenseCategory(fixedExpense.category),
 		necessary: fixedExpense.necessary,
+		userId: fixedExpense.userId,
 	})
 }

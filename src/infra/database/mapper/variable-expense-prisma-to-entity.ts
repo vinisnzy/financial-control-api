@@ -10,6 +10,7 @@ export function variableExpensePrismaToEntity(variableExpense: VariableExpensePr
 		amount: Number(variableExpense.amount),
 		category: toDomainExpenseCategory(variableExpense.category),
 		necessary: variableExpense.necessary,
+		userId: variableExpense.userId,
 		date: variableExpense.date,
 	})
 }
