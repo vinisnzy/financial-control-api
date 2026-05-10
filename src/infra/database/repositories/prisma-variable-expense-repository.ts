@@ -1,6 +1,7 @@
 import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
 import type { CreateVariableExpenseInput } from '@/domain/repositories/variable-expense/dtos/create-variable-expense-input.dto.js'
 import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
 import { Prisma } from '@/generated/prisma/client.js'
@@ -9,9 +10,23 @@ import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
 import { variableExpensePrismaToEntity } from '../mapper/variable-expense-prisma-to-entity.js'
 
 export class PrismaVariableExpenseRepository implements VariableExpenseRepository {
-	async findAll(): Promise<VariableExpense[]> {
-		const variableExpenses = await prisma.variableExpense.findMany()
-		return variableExpenses.map((e) => variableExpensePrismaToEntity(e))
+	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<VariableExpense>> {
+		const page = pagination?.page ?? 1
+		const limit = pagination?.limit ?? 20
+
+		const skip = (page - 1) * limit
+
+		const [variableExpenses, total] = await prisma.$transaction([
+			prisma.variableExpense.findMany({ skip, take: limit }),
+			prisma.variableExpense.count(),
+		])
+
+		return {
+			data: variableExpenses.map((e) => variableExpensePrismaToEntity(e)),
+			total,
+			page,
+			limit,
+		}
 	}
 	async findById(id: string): Promise<VariableExpense | null> {
 		const variableExpense = await prisma.variableExpense.findUnique({

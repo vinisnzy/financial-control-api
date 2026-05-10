@@ -2,14 +2,25 @@ import { randomUUID } from 'node:crypto'
 import { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { PaginatedResult, PaginationInput } from '../../pagination.js'
 import type { CreateFixedExpenseInput } from '../dtos/create-fixed-expense-input.dto.js'
 import type { FixedExpenseRepository } from '../fixed-expense-repository.js'
 
 export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 	public expenses: FixedExpense[] = []
 
-	async findAll(): Promise<FixedExpense[]> {
-		return this.expenses
+	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<FixedExpense>> {
+		const page = pagination?.page ?? 1
+		const limit = pagination?.limit ?? 20
+
+		const start = (page - 1) * limit
+
+		return {
+			data: this.expenses.slice(start, start + limit),
+			total: this.expenses.length,
+			page,
+			limit,
+		}
 	}
 	async findById(id: string): Promise<FixedExpense | null> {
 		return this.expenses.find((e) => e.id === id) ?? null

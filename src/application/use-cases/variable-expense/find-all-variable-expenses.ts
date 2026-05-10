@@ -1,12 +1,13 @@
 import type { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
+import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
 import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
 
-type FindAllVariableExpensesResponse = VariableExpense[]
+type FindAllVariableExpensesResponse = PaginatedResult<VariableExpense>
 
 export class FindAllVariableExpensesUseCase {
 	constructor(private repository: VariableExpenseRepository) {}
 
-	async execute(): Promise<FindAllVariableExpensesResponse> {
-		return this.repository.findAll()
+	async execute(pagination?: PaginationInput): Promise<FindAllVariableExpensesResponse> {
+		return this.repository.findAll(pagination)
 	}
 }

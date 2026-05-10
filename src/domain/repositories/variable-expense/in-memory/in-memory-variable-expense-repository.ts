@@ -2,14 +2,25 @@ import { randomUUID } from 'node:crypto'
 import { VariableExpense } from '@/domain/entities/variable-expense/variable-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
 import { ResourceNotFoundError } from '@/domain/errors/resource-not-found-error.js'
+import type { PaginatedResult, PaginationInput } from '../../pagination.js'
 import type { CreateVariableExpenseInput } from '../dtos/create-variable-expense-input.dto.js'
 import type { VariableExpenseRepository } from '../variable-expense-repository.js'
 
 export class InMemoryVariableExpenseRepository implements VariableExpenseRepository {
 	public expenses: VariableExpense[] = []
 
-	async findAll(): Promise<VariableExpense[]> {
-		return this.expenses
+	async findAll(pagination?: PaginationInput): Promise<PaginatedResult<VariableExpense>> {
+		const page = pagination?.page ?? 1
+		const limit = pagination?.limit ?? 20
+
+		const start = (page - 1) * limit
+
+		return {
+			data: this.expenses.slice(start, start + limit),
+			total: this.expenses.length,
+			page,
+			limit,
+		}
 	}
 	async findById(id: string): Promise<VariableExpense | null> {
 		return this.expenses.find((e) => e.id === id) ?? null

@@ -1,8 +1,9 @@
 import type { FixedExpense } from '@/domain/entities/fixed-expense/fixed-expense.js'
 import type { ExpenseCategory } from '@/domain/enums/expense-category.js'
+import type { PaginatedResult, PaginationInput } from '../pagination.js'
 
 export interface FixedExpenseReadRepository {
-	findAll(): Promise<FixedExpense[]>
+	findAll(pagination?: PaginationInput): Promise<PaginatedResult<FixedExpense>>
 	findById(id: string): Promise<FixedExpense | null>
 	findByNameAndMonth(name: string, month: string): Promise<FixedExpense | null>
 	findByMonth(month: string): Promise<FixedExpense[]>
