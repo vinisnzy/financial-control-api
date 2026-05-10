@@ -8,6 +8,7 @@ type RequestType = {
 }
 
 export async function deleteIncomeController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	await container.deleteIncome.execute(request.params.id)
+	const userId = request.user.sub
+	await container.deleteIncome.execute(request.params.id, userId)
 	reply.status(204).send()
 }

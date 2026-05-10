@@ -11,6 +11,7 @@ export async function findVariableExpensesByCategoryController(
 	request: FastifyRequest<RequestType>,
 	reply: FastifyReply,
 ) {
-	const variableExpenses = await container.findVariableExpenseByCategory.execute(request.params.category)
+	const userId = request.user.sub
+	const variableExpenses = await container.findVariableExpenseByCategory.execute(request.params.category, userId)
 	reply.send(variableExpenses.map((e) => variableExpenseEntityToResponse(e)))
 }

@@ -7,6 +7,7 @@ type RequestType = {
 }
 
 export async function deleteFixedExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	await container.deleteFixedExpense.execute(request.params.id)
+	const userId = request.user.sub
+	await container.deleteFixedExpense.execute(request.params.id, userId)
 	reply.status(204).send()
 }

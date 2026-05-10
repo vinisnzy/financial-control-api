@@ -11,7 +11,8 @@ export async function findFixedExpensesByCategoryAndMonthController(
 	request: FastifyRequest<RequestType>,
 	reply: FastifyReply,
 ) {
+	const userId = request.user.sub
 	const { category, month } = request.params
-	const fixedExpenses = await container.findFixedExpensesByCategoryAndMonth.execute(category, month)
+	const fixedExpenses = await container.findFixedExpensesByCategoryAndMonth.execute(category, month, userId)
 	reply.send(fixedExpenses.map((e) => fixedExpenseEntityToResponse(e)))
 }

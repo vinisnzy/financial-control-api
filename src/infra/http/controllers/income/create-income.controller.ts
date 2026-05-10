@@ -7,6 +7,7 @@ type RequestType = {
 }
 
 export async function createIncomeController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	await container.createIncome.execute(request.body)
+	const userId = request.user.sub
+	await container.createIncome.execute({ ...request.body, userId })
 	reply.status(201).send()
 }

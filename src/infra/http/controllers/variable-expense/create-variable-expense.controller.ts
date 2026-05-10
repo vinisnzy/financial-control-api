@@ -7,6 +7,7 @@ type RequestType = {
 }
 
 export async function createVariableExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	await container.createVariableExpense.execute(request.body)
+	const userId = request.user.sub
+	await container.createVariableExpense.execute({ ...request.body, userId })
 	reply.status(201).send()
 }

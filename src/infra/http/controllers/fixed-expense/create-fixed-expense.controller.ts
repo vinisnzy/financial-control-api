@@ -7,6 +7,7 @@ type RequestType = {
 }
 
 export async function createFixedExpenseController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	await container.createFixedExpense.execute(request.body)
+	const userId = request.user.sub
+	await container.createFixedExpense.execute({ ...request.body, userId })
 	reply.status(201).send()
 }

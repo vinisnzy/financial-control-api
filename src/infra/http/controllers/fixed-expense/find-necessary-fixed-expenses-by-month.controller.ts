@@ -11,6 +11,7 @@ export async function findNecessaryFixedExpensesByMonthController(
 	request: FastifyRequest<RequestType>,
 	reply: FastifyReply,
 ) {
-	const expenses = await container.findNecessaryFixedExpensesByMonth.execute(request.params.month)
+	const userId = request.user.sub
+	const expenses = await container.findNecessaryFixedExpensesByMonth.execute(request.params.month, userId)
 	reply.send(expenses.map((e) => fixedExpenseEntityToResponse(e)))
 }

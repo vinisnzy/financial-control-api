@@ -8,6 +8,7 @@ type RequestType = {
 }
 
 export async function findFixedExpenseByIdController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	const expense = await container.findFixedExpenseById.execute(request.params.id)
+	const userId = request.user.sub
+	const expense = await container.findFixedExpenseById.execute(request.params.id, userId)
 	reply.send(fixedExpenseEntityToResponse(expense))
 }

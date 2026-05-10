@@ -8,6 +8,7 @@ type RequestType = {
 }
 
 export async function findVariableExpenseByIdController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
-	const variableExpense = await container.findVariableExpenseById.execute(request.params.id)
+	const userId = request.user.sub
+	const variableExpense = await container.findVariableExpenseById.execute(request.params.id, userId)
 	reply.send(variableExpenseEntityToResponse(variableExpense))
 }

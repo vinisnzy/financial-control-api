@@ -8,7 +8,8 @@ type RequestType = {
 }
 
 export async function findAllVariableExpensesController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+	const userId = request.user.sub
 	const { page, limit } = request.query
-	const result = await container.findAllVariableExpenses.execute({ page, limit })
+	const result = await container.findAllVariableExpenses.execute(userId, { page, limit })
 	reply.send({ ...result, data: result.data.map((e) => variableExpenseEntityToResponse(e)) })
 }

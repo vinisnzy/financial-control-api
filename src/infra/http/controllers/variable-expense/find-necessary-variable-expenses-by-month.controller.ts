@@ -11,6 +11,7 @@ export async function findNecessaryVariableExpensesByMonthController(
 	request: FastifyRequest<RequestType>,
 	reply: FastifyReply,
 ) {
-	const variableExpenses = await container.findNecessaryVariableExpensesByMonth.execute(request.params.month)
+	const userId = request.user.sub
+	const variableExpenses = await container.findNecessaryVariableExpensesByMonth.execute(request.params.month, userId)
 	reply.send(variableExpenses.map((e) => variableExpenseEntityToResponse(e)))
 }
