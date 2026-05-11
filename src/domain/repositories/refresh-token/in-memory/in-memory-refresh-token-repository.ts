@@ -19,14 +19,6 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
 		})
 		this.refreshTokens.push(refreshToken)
 	}
-	async save(refreshToken: RefreshToken, userId: string): Promise<void> {
-		const index = this.refreshTokens.findIndex((rt) => rt.id === refreshToken.id && rt.userId === userId)
-		if (index === -1) {
-			throw new ResourceNotFoundError(`Refresh token not found with id: ${refreshToken.id}`)
-		}
-
-		this.refreshTokens[index] = refreshToken
-	}
 	async delete(id: string): Promise<void> {
 		const index = this.refreshTokens.findIndex((rt) => rt.id === id)
 		if (index === -1) {
