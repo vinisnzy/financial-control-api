@@ -20,8 +20,30 @@ describe('Prisma variable expense repository', () => {
 	it('should list all expenses', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const result = await repository.findAll(USER_ID)
 
@@ -33,15 +55,18 @@ describe('Prisma variable expense repository', () => {
 		const repository = new PrismaVariableExpenseRepository()
 
 		for (let i = 1; i <= 5; i++) {
-			await repository.create({
-				name: `Expense ${i}`,
-				month: '2026-02',
-				amount: i * 100,
-				category: ExpenseCategory.FOOD,
-				necessary: true,
-				date: new Date(Date.UTC(2026, 1, i)),
-				userId: USER_ID,
-			}, USER_ID)
+			await repository.create(
+				{
+					name: `Expense ${i}`,
+					month: '2026-02',
+					amount: i * 100,
+					category: ExpenseCategory.FOOD,
+					necessary: true,
+					date: new Date(Date.UTC(2026, 1, i)),
+					userId: USER_ID,
+				},
+				USER_ID,
+			)
 		}
 
 		const page1 = await repository.findAll(USER_ID, { page: 1, limit: 2 })
@@ -97,7 +122,18 @@ describe('Prisma variable expense repository', () => {
 	it('should return null when current expenses does not have the corresponding id', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const response = await repository.findById(randomUUID(), USER_ID)
 
@@ -115,9 +151,42 @@ describe('Prisma variable expense repository', () => {
 	it('should list expenses by month', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 11)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Supermarket January', month: '2026-01', amount: 250.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 11)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 11)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Supermarket January',
+				month: '2026-01',
+				amount: 250.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 11)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findByMonth('2026-02', USER_ID)
 
@@ -128,8 +197,30 @@ describe('Prisma variable expense repository', () => {
 	it('should list expenses by category', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 11)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 11)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findByCategory(ExpenseCategory.FOOD, USER_ID)
 
@@ -140,8 +231,30 @@ describe('Prisma variable expense repository', () => {
 	it('should list all necessary expenses', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findAllNecessary(USER_ID)
 
@@ -152,9 +265,42 @@ describe('Prisma variable expense repository', () => {
 	it('should list necessary expenses by month', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 11)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Supermarket January', month: '2026-01', amount: 250.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 11)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Supermarket January',
+				month: '2026-01',
+				amount: 250.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findNecessaryByMonth('2026-02', USER_ID)
 
@@ -165,7 +311,18 @@ describe('Prisma variable expense repository', () => {
 	it('should return an empty list when no necessary expenses for the month', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: false, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findNecessaryByMonth('2026-02', USER_ID)
 		expect(expenses).toHaveLength(0)
@@ -175,9 +332,42 @@ describe('Prisma variable expense repository', () => {
 	it('should list expenses by category and month', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Cinema', month: '2026-02', amount: 50.0, category: ExpenseCategory.LEISURE, necessary: false, date: new Date(Date.UTC(2026, 1, 11)), userId: USER_ID }, USER_ID)
-		await repository.create({ name: 'Supermarket January', month: '2026-01', amount: 250.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Cinema',
+				month: '2026-02',
+				amount: 50.0,
+				category: ExpenseCategory.LEISURE,
+				necessary: false,
+				date: new Date(Date.UTC(2026, 1, 11)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
+		await repository.create(
+			{
+				name: 'Supermarket January',
+				month: '2026-01',
+				amount: 250.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.FOOD, '2026-02', USER_ID)
 
@@ -188,7 +378,18 @@ describe('Prisma variable expense repository', () => {
 	it('should return an empty list when no expenses for category and month', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const expenses = await repository.findByCategoryAndMonth(ExpenseCategory.LEISURE, '2026-01', USER_ID)
 		expect(expenses).toHaveLength(0)
@@ -198,7 +399,18 @@ describe('Prisma variable expense repository', () => {
 	it('should update an existing expense', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const result = await repository.findAll(USER_ID)
 		const id = result.data[0].id
@@ -245,7 +457,18 @@ describe('Prisma variable expense repository', () => {
 	it('should create an expense', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const result = await repository.findAll(USER_ID)
 
@@ -256,7 +479,18 @@ describe('Prisma variable expense repository', () => {
 	it('should delete an expense', async () => {
 		const repository = new PrismaVariableExpenseRepository()
 
-		await repository.create({ name: 'Supermarket', month: '2026-02', amount: 300.0, category: ExpenseCategory.FOOD, necessary: true, date: new Date(Date.UTC(2026, 1, 10)), userId: USER_ID }, USER_ID)
+		await repository.create(
+			{
+				name: 'Supermarket',
+				month: '2026-02',
+				amount: 300.0,
+				category: ExpenseCategory.FOOD,
+				necessary: true,
+				date: new Date(Date.UTC(2026, 1, 10)),
+				userId: USER_ID,
+			},
+			USER_ID,
+		)
 
 		const result = await repository.findAll(USER_ID)
 		const id = result.data[0].id
@@ -275,6 +509,8 @@ describe('Prisma variable expense repository', () => {
 
 	it('should throw if trying to delete a non-existent variable expense', async () => {
 		const repository = new PrismaVariableExpenseRepository()
-		await expect(repository.delete('non-existent-id', USER_ID)).rejects.toThrow('Expense not found with id: non-existent-id')
+		await expect(repository.delete('non-existent-id', USER_ID)).rejects.toThrow(
+			'Expense not found with id: non-existent-id',
+		)
 	})
 })

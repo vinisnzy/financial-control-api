@@ -4,8 +4,8 @@ import type { CreateIncomeInput } from '@/domain/repositories/income/dtos/create
 import type { IncomeRepository } from '@/domain/repositories/income/income-repository.js'
 import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
 import { Prisma } from '@/generated/prisma/client.js'
-import { prisma } from '../lib/prisma.js'
-import { incomePrismaToEntity } from '../mapper/income-prisma-to-entity.js'
+import { prisma } from '../../lib/prisma.js'
+import { incomePrismaToEntity } from '../../mapper/income-prisma-to-entity.js'
 
 export class PrismaIncomeRepository implements IncomeRepository {
 	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<Income>> {

@@ -5,9 +5,9 @@ import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pag
 import type { CreateVariableExpenseInput } from '@/domain/repositories/variable-expense/dtos/create-variable-expense-input.dto.js'
 import type { VariableExpenseRepository } from '@/domain/repositories/variable-expense/variable-expense-repository.js'
 import { Prisma } from '@/generated/prisma/client.js'
-import { prisma } from '../lib/prisma.js'
-import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
-import { variableExpensePrismaToEntity } from '../mapper/variable-expense-prisma-to-entity.js'
+import { prisma } from '../../lib/prisma.js'
+import { toPrismaExpenseCategory } from '../../mapper/expense-category-mapper.js'
+import { variableExpensePrismaToEntity } from '../../mapper/variable-expense-prisma-to-entity.js'
 
 export class PrismaVariableExpenseRepository implements VariableExpenseRepository {
 	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<VariableExpense>> {

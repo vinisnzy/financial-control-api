@@ -5,9 +5,9 @@ import type { CreateFixedExpenseInput } from '@/domain/repositories/fixed-expens
 import type { FixedExpenseRepository } from '@/domain/repositories/fixed-expense/fixed-expense-repository.js'
 import type { PaginatedResult, PaginationInput } from '@/domain/repositories/pagination.js'
 import { Prisma } from '@/generated/prisma/client.js'
-import { prisma } from '../lib/prisma.js'
-import { toPrismaExpenseCategory } from '../mapper/expense-category-mapper.js'
-import { fixedExpensePrismaToEntity } from '../mapper/fixed-expense-prisma-to-entity.js'
+import { prisma } from '../../lib/prisma.js'
+import { toPrismaExpenseCategory } from '../../mapper/expense-category-mapper.js'
+import { fixedExpensePrismaToEntity } from '../../mapper/fixed-expense-prisma-to-entity.js'
 
 export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 	async findAll(userId: string, pagination?: PaginationInput): Promise<PaginatedResult<FixedExpense>> {
