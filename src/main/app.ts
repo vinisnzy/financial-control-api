@@ -1,3 +1,4 @@
+import fastifyJwt from '@fastify/jwt'
 import sensible from '@fastify/sensible'
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -9,6 +10,10 @@ export function buildApp() {
 	app.setValidatorCompiler(validatorCompiler)
 	app.setSerializerCompiler(serializerCompiler)
 	app.register(sensible)
+
+	const secret = process.env.JWT_SECRET ?? 'secret'
+	app.register(fastifyJwt, { secret })
+	
 	setErrorHandler(app)
 	registerRoutes(app)
 	return app.withTypeProvider<ZodTypeProvider>()
