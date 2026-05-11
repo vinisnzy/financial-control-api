@@ -1,5 +1,13 @@
 import { BadRequestError } from '@/domain/errors/bad-request-error.js'
 
+interface UserRequest {
+	id: string
+	email: string
+	password: string
+	name: string
+	createdAt?: Date
+}
+
 interface UserProps {
 	id: string
 	email: string
@@ -11,20 +19,21 @@ interface UserProps {
 export class User {
 	private props: UserProps
 
-	constructor(props: UserProps) {
-		if (!props.email) {
+	constructor(request: UserRequest) {
+		if (!request.email) {
 			throw new BadRequestError('User email cannot be blank')
 		}
-		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(props.email)) {
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(request.email)) {
 			throw new BadRequestError('User email is invalid')
 		}
-		if (!props.password) {
+		if (!request.password) {
 			throw new BadRequestError('User password cannot be blank')
 		}
-		if (!props.name) {
+		if (!request.name) {
 			throw new BadRequestError('User name cannot be blank')
 		}
-		this.props = props
+		const createdAt = request.createdAt ?? new Date()
+		this.props = { ...request, createdAt }
 	}
 
 	get id() {
