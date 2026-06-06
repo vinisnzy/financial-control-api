@@ -72,8 +72,9 @@ export class PrismaIncomeRepository implements IncomeRepository {
 		}
 	}
 
-	async create(data: CreateIncomeInput, userId: string): Promise<void> {
-		await prisma.income.create({ data: { ...data, userId } })
+	async create(data: CreateIncomeInput, userId: string): Promise<Income> {
+		const income = await prisma.income.create({ data: { ...data, userId } })
+		return incomePrismaToEntity(income)
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

@@ -3,6 +3,6 @@ import type { CreateFixedExpenseInput } from './dtos/create-fixed-expense-input.
 
 export interface FixedExpenseWriteRepository {
 	save(expense: FixedExpense, userId: string): Promise<void>
-	create(data: CreateFixedExpenseInput, userId: string): Promise<void>
+	create(data: CreateFixedExpenseInput, userId: string): Promise<FixedExpense>
 	delete(id: string, userId: string): Promise<void>
 }

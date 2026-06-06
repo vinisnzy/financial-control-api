@@ -3,6 +3,6 @@ import type { CreateVariableExpenseInput } from './dtos/create-variable-expense-
 
 export interface VariableExpenseWriteRepository {
 	save(expense: VariableExpense, userId: string): Promise<void>
-	create(data: CreateVariableExpenseInput, userId: string): Promise<void>
+	create(data: CreateVariableExpenseInput, userId: string): Promise<VariableExpense>
 	delete(id: string, userId: string): Promise<void>
 }

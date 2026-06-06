@@ -38,12 +38,13 @@ export class InMemoryUserRepository implements UserRepository {
 
 		this.users[index] = user
 	}
-	async create(data: CreateUserInput): Promise<void> {
+	async create(data: CreateUserInput): Promise<User> {
 		const user = new User({
 			id: randomUUID().toString(),
 			...data,
 		})
 		this.users.push(user)
+		return user
 	}
 	async delete(id: string): Promise<void> {
 		const index = this.users.findIndex((u) => u.id === id)

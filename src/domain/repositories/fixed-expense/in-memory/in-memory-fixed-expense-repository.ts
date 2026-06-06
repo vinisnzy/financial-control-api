@@ -61,13 +61,14 @@ export class InMemoryFixedExpenseRepository implements FixedExpenseRepository {
 		this.expenses[index] = expense
 	}
 
-	async create(data: CreateFixedExpenseInput, userId: string): Promise<void> {
+	async create(data: CreateFixedExpenseInput, userId: string): Promise<FixedExpense> {
 		const fixedExpense = new FixedExpense({
 			id: randomUUID().toString(),
 			...data,
 			userId,
 		})
 		this.expenses.push(fixedExpense)
+		return fixedExpense
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

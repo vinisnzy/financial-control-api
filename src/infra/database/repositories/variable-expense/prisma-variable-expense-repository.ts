@@ -103,14 +103,15 @@ export class PrismaVariableExpenseRepository implements VariableExpenseRepositor
 		}
 	}
 
-	async create(data: CreateVariableExpenseInput, userId: string): Promise<void> {
-		await prisma.variableExpense.create({
+	async create(data: CreateVariableExpenseInput, userId: string): Promise<VariableExpense> {
+		const variableExpense = await prisma.variableExpense.create({
 			data: {
 				...data,
 				category: toPrismaExpenseCategory(data.category),
 				userId,
 			},
 		})
+		return variableExpensePrismaToEntity(variableExpense)
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

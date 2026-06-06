@@ -61,13 +61,14 @@ export class InMemoryVariableExpenseRepository implements VariableExpenseReposit
 		this.expenses[index] = expense
 	}
 
-	async create(data: CreateVariableExpenseInput, userId: string): Promise<void> {
+	async create(data: CreateVariableExpenseInput, userId: string): Promise<VariableExpense> {
 		const variableExpense = new VariableExpense({
 			id: randomUUID().toString(),
 			...data,
 			userId,
 		})
 		this.expenses.push(variableExpense)
+		return variableExpense
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

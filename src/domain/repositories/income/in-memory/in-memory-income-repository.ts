@@ -44,13 +44,14 @@ export class InMemoryIncomeRepository implements IncomeRepository {
 		this.incomes[index] = income
 	}
 
-	async create(data: CreateIncomeInput, userId: string): Promise<void> {
+	async create(data: CreateIncomeInput, userId: string): Promise<Income> {
 		const income = new Income({
 			id: randomUUID().toString(),
 			...data,
 			userId,
 		})
 		this.incomes.push(income)
+		return income
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

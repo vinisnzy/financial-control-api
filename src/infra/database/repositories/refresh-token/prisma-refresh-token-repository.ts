@@ -21,8 +21,9 @@ export class PrismaRefreshTokenRepository implements RefreshTokenRepository {
 		})
 		return refreshTokens.map((rt) => refreshTokenPrismaToEntity(rt))
 	}
-	async create(data: CreateRefreshTokenInput): Promise<void> {
-		await prisma.refreshToken.create({ data })
+	async create(data: CreateRefreshTokenInput): Promise<RefreshToken> {
+		const refreshToken = await prisma.refreshToken.create({ data })
+		return refreshTokenPrismaToEntity(refreshToken)
 	}
 	async delete(id: string): Promise<void> {
 		const result = await prisma.refreshToken.delete({ where: { id } })

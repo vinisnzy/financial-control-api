@@ -104,14 +104,15 @@ export class PrismaFixedExpenseRepository implements FixedExpenseRepository {
 		}
 	}
 
-	async create(data: CreateFixedExpenseInput, userId: string): Promise<void> {
-		await prisma.fixedExpense.create({
+	async create(data: CreateFixedExpenseInput, userId: string): Promise<FixedExpense> {
+		const fixedExpense = await prisma.fixedExpense.create({
 			data: {
 				...data,
 				category: toPrismaExpenseCategory(data.category),
 				userId,
 			},
 		})
+		return fixedExpensePrismaToEntity(fixedExpense)
 	}
 
 	async delete(id: string, userId: string): Promise<void> {

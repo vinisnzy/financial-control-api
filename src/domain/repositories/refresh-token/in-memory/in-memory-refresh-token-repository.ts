@@ -12,12 +12,13 @@ export class InMemoryRefreshTokenRepository implements RefreshTokenRepository {
 	async findByUserId(userId: string): Promise<RefreshToken[]> {
 		return this.refreshTokens.filter((rt) => rt.userId === userId)
 	}
-	async create(data: CreateRefreshTokenInput): Promise<void> {
+	async create(data: CreateRefreshTokenInput): Promise<RefreshToken> {
 		const refreshToken = new RefreshToken({
 			id: randomUUID().toString(),
 			...data,
 		})
 		this.refreshTokens.push(refreshToken)
+		return refreshToken
 	}
 	async delete(id: string): Promise<void> {
 		const index = this.refreshTokens.findIndex((rt) => rt.id === id)

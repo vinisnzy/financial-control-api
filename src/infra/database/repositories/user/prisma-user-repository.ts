@@ -66,8 +66,9 @@ export class PrismaUserRepository implements UserRepository {
 			}
 		}
 	}
-	async create(data: CreateUserInput): Promise<void> {
-		await prisma.user.create({ data: { ...data } })
+	async create(data: CreateUserInput): Promise<User> {
+		const user = await prisma.user.create({ data: { ...data } })
+		return userPrismaToEntity(user)
 	}
 	async delete(id: string): Promise<void> {
 		const result = await prisma.user.delete({ where: { id } })
