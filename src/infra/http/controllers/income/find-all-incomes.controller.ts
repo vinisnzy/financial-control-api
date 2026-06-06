@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { incomeEntityToResponse } from '@/infra/http/mappers/income-to-response.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 import type { paginationParamRequest } from '../../schemas/pagination-param.schema.js'
 
 type RequestType = {

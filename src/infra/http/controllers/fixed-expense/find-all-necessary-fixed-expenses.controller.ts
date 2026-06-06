@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 import { fixedExpenseEntityToResponse } from '../../mappers/fixed-expense-to-response.js'
 
 export async function findAllNecessaryFixedExpensesController(request: FastifyRequest, reply: FastifyReply) {

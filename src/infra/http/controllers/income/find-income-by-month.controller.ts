@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { incomeEntityToResponse } from '@/infra/http/mappers/income-to-response.js'
 import type { monthParamRequest } from '@/infra/http/schemas/month-param.schema.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 
 type RequestType = {
 	Params: monthParamRequest

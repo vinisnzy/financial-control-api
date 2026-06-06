@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { variableExpenseEntityToResponse } from '@/infra/http/mappers/variable-expense-to-response.js'
 import type { categoryAndMonthParamRequest } from '@/infra/http/schemas/category-and-month-params.schema.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 
 type RequestType = {
 	Params: categoryAndMonthParamRequest

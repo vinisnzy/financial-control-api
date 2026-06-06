@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { variableExpenseEntityToResponse } from '@/infra/http/mappers/variable-expense-to-response.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 import type { paginationParamRequest } from '../../schemas/pagination-param.schema.js'
 
 type RequestType = {

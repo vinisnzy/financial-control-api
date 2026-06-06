@@ -1,10 +1,26 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { buildApp } from '@/main/app.js'
 
-vi.mock('@/main/container.js', () => ({
+vi.mock('@/main/app.js', () => ({
 	container: {
 		findAllFixedExpenses: {
-			execute: vi.fn().mockResolvedValue({ data: [{ id: '123e4567-e89b-12d3-a456-426614174000', name: 'Rent', month: '2026-05', amount: 1500, category: 'food', necessary: true }], total: 1, page: 1, limit: 10 }),
+			execute: vi
+				.fn()
+				.mockResolvedValue({
+					data: [
+						{
+							id: '123e4567-e89b-12d3-a456-426614174000',
+							name: 'Rent',
+							month: '2026-05',
+							amount: 1500,
+							category: 'food',
+							necessary: true,
+						},
+					],
+					total: 1,
+					page: 1,
+					limit: 10,
+				}),
 		},
 	},
 }))

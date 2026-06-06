@@ -1,3 +1,5 @@
+import type { FastifyInstance } from 'fastify'
+import { RegisterUseCase } from '@/application/use-cases/auth/register.js'
 import { CreateFixedExpenseUseCase } from '@/application/use-cases/fixed-expense/create-fixed-expense.js'
 import { DeleteFixedExpenseUseCase } from '@/application/use-cases/fixed-expense/delete-fixed-expense.js'
 import { FindAllFixedExpensesUseCase } from '@/application/use-cases/fixed-expense/find-all-fixed-expenses.js'
@@ -25,50 +27,72 @@ import { FindVariableExpenseByIdUseCase } from '@/application/use-cases/variable
 import { FindVariableExpensesByCategoryAndMonthUseCase } from '@/application/use-cases/variable-expense/find-variable-expenses-by-category-and-month.js'
 import { FindVariableExpensesByMonthUseCase } from '@/application/use-cases/variable-expense/find-variable-expenses-by-month.js'
 import { UpdateVariableExpenseUseCase } from '@/application/use-cases/variable-expense/update-variable-expense.js'
-import { PrismaFixedExpenseRepository } from '@/infra/database/repositories/prisma-fixed-expense-repository.js'
-import { PrismaIncomeRepository } from '@/infra/database/repositories/prisma-income-repository.js'
-import { PrismaVariableExpenseRepository } from '@/infra/database/repositories/prisma-variable-expense-repository.js'
+import { PrismaFixedExpenseRepository } from '@/infra/database/repositories/fixed-expense/prisma-fixed-expense-repository.js'
+import { PrismaIncomeRepository } from '@/infra/database/repositories/income/prisma-income-repository.js'
+import { PrismaRefreshTokenRepository } from '@/infra/database/repositories/refresh-token/prisma-refresh-token-repository.js'
+import { PrismaUserRepository } from '@/infra/database/repositories/user/prisma-user-repository.js'
+import { PrismaVariableExpenseRepository } from '@/infra/database/repositories/variable-expense/prisma-variable-expense-repository.js'
+import { BCryptHashService } from '@/infra/services/bcrypt-hash-service.js'
+import { FastifyJwtTokenService } from '@/infra/services/fastify-jwt-token-service.js'
 
-const incomeRepository = new PrismaIncomeRepository()
-const fixedExpenseRepository = new PrismaFixedExpenseRepository()
-const variableExpenseRepository = new PrismaVariableExpenseRepository()
+export function createContainer(app: FastifyInstance) {
+	const incomeRepository = new PrismaIncomeRepository()
+	const fixedExpenseRepository = new PrismaFixedExpenseRepository()
+	const variableExpenseRepository = new PrismaVariableExpenseRepository()
+	const userRepository = new PrismaUserRepository()
+	const refreshTokenRepository = new PrismaRefreshTokenRepository()
 
-export const container = {
-	// Repositories
-	incomeRepository,
-	fixedExpenseRepository,
-	variableExpenseRepository,
+	const hashService = new BCryptHashService(10)
+	const tokenService = new FastifyJwtTokenService(
+		app,
+		process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+		process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+	)
 
-	// Incomes
-	createIncome: new CreateIncomeUseCase(incomeRepository),
-	updateIncome: new UpdateIncomeUseCase(incomeRepository),
-	deleteIncome: new DeleteIncomeUseCase(incomeRepository),
-	findAllIncomes: new FindAllIncomesUseCase(incomeRepository),
-	findIncomeById: new FindIncomeByIdUseCase(incomeRepository),
-	findIncomeByMonth: new FindIncomesByMonthUseCase(incomeRepository),
-	findIncomeByNameAndMonth: new FindIncomeByNameAndMonthUseCase(incomeRepository),
+	return {
+		// Repositories
+		incomeRepository,
+		fixedExpenseRepository,
+		variableExpenseRepository,
+		userRepository,
+		refreshTokenRepository,
 
-	// Fixed Expenses
-	createFixedExpense: new CreateFixedExpenseUseCase(fixedExpenseRepository),
-	updateFixedExpense: new UpdateFixedExpenseUseCase(fixedExpenseRepository),
-	deleteFixedExpense: new DeleteFixedExpenseUseCase(fixedExpenseRepository),
-	findAllFixedExpenses: new FindAllFixedExpensesUseCase(fixedExpenseRepository),
-	findFixedExpenseById: new FindFixedExpenseByIdUseCase(fixedExpenseRepository),
-	findFixedExpensesByMonth: new FindFixedExpensesByMonthUseCase(fixedExpenseRepository),
-	findFixedExpensesByCategory: new FindFixedExpensesByCategoryUseCase(fixedExpenseRepository),
-	findFixedExpensesByCategoryAndMonth: new FindFixedExpensesByCategoryAndMonthUseCase(fixedExpenseRepository),
-	findAllNecessaryFixedExpenses: new FindAllNecessaryFixedExpensesUseCase(fixedExpenseRepository),
-	findNecessaryFixedExpensesByMonth: new FindNecessaryFixedExpensesByMonthUseCase(fixedExpenseRepository),
+		// Auth
+		register: new RegisterUseCase(userRepository, hashService),
 
-	// Variable Expenses
-	createVariableExpense: new CreateVariableExpenseUseCase(variableExpenseRepository),
-	updateVariableExpense: new UpdateVariableExpenseUseCase(variableExpenseRepository),
-	deleteVariableExpense: new DeleteVariableExpenseUseCase(variableExpenseRepository),
-	findAllVariableExpenses: new FindAllVariableExpensesUseCase(variableExpenseRepository),
-	findVariableExpenseById: new FindVariableExpenseByIdUseCase(variableExpenseRepository),
-	findVariableExpensesByMonth: new FindVariableExpensesByMonthUseCase(variableExpenseRepository),
-	findVariableExpenseByCategory: new FindVariableExpensesByCategoryUseCase(variableExpenseRepository),
-	findVariableExpensesByCategoryAndMonth: new FindVariableExpensesByCategoryAndMonthUseCase(variableExpenseRepository),
-	findAllNecessaryVariableExpenses: new FindAllNecessaryVariableExpensesUseCase(variableExpenseRepository),
-	findNecessaryVariableExpensesByMonth: new FindNecessaryVariableExpensesByMonthUseCase(variableExpenseRepository),
+		// Incomes
+		createIncome: new CreateIncomeUseCase(incomeRepository),
+		updateIncome: new UpdateIncomeUseCase(incomeRepository),
+		deleteIncome: new DeleteIncomeUseCase(incomeRepository),
+		findAllIncomes: new FindAllIncomesUseCase(incomeRepository),
+		findIncomeById: new FindIncomeByIdUseCase(incomeRepository),
+		findIncomeByMonth: new FindIncomesByMonthUseCase(incomeRepository),
+		findIncomeByNameAndMonth: new FindIncomeByNameAndMonthUseCase(incomeRepository),
+
+		// Fixed Expenses
+		createFixedExpense: new CreateFixedExpenseUseCase(fixedExpenseRepository),
+		updateFixedExpense: new UpdateFixedExpenseUseCase(fixedExpenseRepository),
+		deleteFixedExpense: new DeleteFixedExpenseUseCase(fixedExpenseRepository),
+		findAllFixedExpenses: new FindAllFixedExpensesUseCase(fixedExpenseRepository),
+		findFixedExpenseById: new FindFixedExpenseByIdUseCase(fixedExpenseRepository),
+		findFixedExpensesByMonth: new FindFixedExpensesByMonthUseCase(fixedExpenseRepository),
+		findFixedExpensesByCategory: new FindFixedExpensesByCategoryUseCase(fixedExpenseRepository),
+		findFixedExpensesByCategoryAndMonth: new FindFixedExpensesByCategoryAndMonthUseCase(fixedExpenseRepository),
+		findAllNecessaryFixedExpenses: new FindAllNecessaryFixedExpensesUseCase(fixedExpenseRepository),
+		findNecessaryFixedExpensesByMonth: new FindNecessaryFixedExpensesByMonthUseCase(fixedExpenseRepository),
+
+		// Variable Expenses
+		createVariableExpense: new CreateVariableExpenseUseCase(variableExpenseRepository),
+		updateVariableExpense: new UpdateVariableExpenseUseCase(variableExpenseRepository),
+		deleteVariableExpense: new DeleteVariableExpenseUseCase(variableExpenseRepository),
+		findAllVariableExpenses: new FindAllVariableExpensesUseCase(variableExpenseRepository),
+		findVariableExpenseById: new FindVariableExpenseByIdUseCase(variableExpenseRepository),
+		findVariableExpensesByMonth: new FindVariableExpensesByMonthUseCase(variableExpenseRepository),
+		findVariableExpenseByCategory: new FindVariableExpensesByCategoryUseCase(variableExpenseRepository),
+		findVariableExpensesByCategoryAndMonth: new FindVariableExpensesByCategoryAndMonthUseCase(
+			variableExpenseRepository,
+		),
+		findAllNecessaryVariableExpenses: new FindAllNecessaryVariableExpensesUseCase(variableExpenseRepository),
+		findNecessaryVariableExpensesByMonth: new FindNecessaryVariableExpensesByMonthUseCase(variableExpenseRepository),
+	}
 }

@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { CreateFixedExpenseRequest } from '@/infra/http/schemas/fixed-expense/create-fixed-expense.schema.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 
 type RequestType = {
 	Body: CreateFixedExpenseRequest

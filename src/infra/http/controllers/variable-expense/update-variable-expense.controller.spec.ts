@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { buildApp } from '@/main/app.js'
 
-vi.mock('@/main/container.js', () => ({
+vi.mock('@/main/app.js', () => ({
 	container: {
 		updateVariableExpense: {
 			execute: vi.fn().mockResolvedValue(undefined),

@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 import { incomeEntityToResponse } from '../../mappers/income-to-response.js'
 import type { nameAndMonthParamRequest } from '../../schemas/name-and-month-param.schema.js'
 

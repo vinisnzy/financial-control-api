@@ -11,10 +11,20 @@ const variableExpenseMock = {
 	date: new Date('2026-05-01'),
 }
 
-vi.mock('@/main/container.js', () => ({
+vi.mock('@/main/app.js', () => ({
 	container: {
 		findVariableExpenseById: {
-			execute: vi.fn().mockResolvedValue({ id: '123e4567-e89b-12d3-a456-426614174000', name: 'Coffee', month: '2026-05', amount: 10, category: 'food', necessary: false, date: new Date('2026-05-01') }),
+			execute: vi
+				.fn()
+				.mockResolvedValue({
+					id: '123e4567-e89b-12d3-a456-426614174000',
+					name: 'Coffee',
+					month: '2026-05',
+					amount: 10,
+					category: 'food',
+					necessary: false,
+					date: new Date('2026-05-01'),
+				}),
 		},
 	},
 }))

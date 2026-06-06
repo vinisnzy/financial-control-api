@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 
 type RequestType = {
 	Params: {

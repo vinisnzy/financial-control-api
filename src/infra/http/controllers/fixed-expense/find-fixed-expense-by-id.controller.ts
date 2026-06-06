@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { idParamRequest } from '@/infra/http/schemas/id-param.schema.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 import { fixedExpenseEntityToResponse } from '../../mappers/fixed-expense-to-response.js'
 
 type RequestType = {

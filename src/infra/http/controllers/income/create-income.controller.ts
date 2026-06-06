@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { CreateIncomeRequest } from '@/infra/http/schemas/income/create-income.schema.js'
-import { container } from '@/main/container.js'
+import { container } from '@/main/server.js'
 
 type RequestType = {
 	Body: CreateIncomeRequest
