@@ -2,6 +2,7 @@ import { InMemoryUserRepository } from "@/domain/repositories/user/in-memory/in-
 import { describe, expect, it } from "vitest";
 import { RegisterUseCase } from "./register.js";
 import { BCryptHashService } from "@/infra/services/bcrypt-hash-service.js";
+import { EmailAlreadyInUseError } from "@/domain/errors/email-already-in-use-error.js";
 
 describe('Register user use case', () => {
     it('should register an user', async () => {
@@ -37,6 +38,6 @@ describe('Register user use case', () => {
             email,
             password: 'testpassword',
             name: 'Test User'
-        })).rejects.toThrow()
+        })).rejects.toThrow(EmailAlreadyInUseError)
     })
 })
