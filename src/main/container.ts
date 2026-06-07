@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify'
 import { LoginUseCase } from '@/application/use-cases/auth/login.js'
+import { LogoutUseCase } from '@/application/use-cases/auth/logout.js'
 import { RefreshUseCase } from '@/application/use-cases/auth/refresh.js'
 import { RegisterUseCase } from '@/application/use-cases/auth/register.js'
 import { CreateFixedExpenseUseCase } from '@/application/use-cases/fixed-expense/create-fixed-expense.js'
@@ -63,6 +64,7 @@ export function createContainer(app: FastifyInstance) {
 		register: new RegisterUseCase(userRepository, hashService),
 		login: new LoginUseCase(userRepository, refreshTokenRepository, tokenService, hashService),
 		refresh: new RefreshUseCase(refreshTokenRepository, tokenService),
+		logout: new LogoutUseCase(refreshTokenRepository),
 
 		// Incomes
 		createIncome: new CreateIncomeUseCase(incomeRepository),
