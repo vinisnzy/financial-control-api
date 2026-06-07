@@ -1,4 +1,7 @@
 import type { FastifyError, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import { EmailAlreadyInUseError } from '@/domain/errors/email-already-in-use-error.js'
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error.js'
+import { UnauthorizedError } from '@/domain/errors/unauthorized-error.js'
 
 const PROBLEM_BASE_URI = 'about:blank'
 
@@ -29,6 +32,21 @@ function buildProblem(
 export function setErrorHandler(app: FastifyInstance) {
 	app.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
 		reply.header('content-type', 'application/problem+json')
+
+		if (error instanceof InvalidCredentialsError) {
+			request.log.warn({ err: error }, 'invalid credentials error')
+			return reply.status(401).send(buildProblem(401, 'Invalid credentials error', request))
+		}
+
+		if (error instanceof UnauthorizedError) {
+			request.log.warn({ err: error }, 'unauthorized error')
+			return reply.status(401).send(buildProblem(401, 'Unauthorized error', request))
+		}
+
+		if (error instanceof EmailAlreadyInUseError) {
+			request.log.warn({ err: error }, 'email already in use error')
+			return reply.status(409).send(buildProblem(409, 'Email already in use error', request))
+		}
 
 		if (error.validation) {
 			request.log.warn({ err: error }, 'validation error')
