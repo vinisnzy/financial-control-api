@@ -6,7 +6,7 @@ type RequestType = {
 	Body: RegisterRequest
 }
 
-export async function RegisterController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
+export async function registerController(request: FastifyRequest<RequestType>, reply: FastifyReply) {
 	await container.register.execute(request.body)
 	reply.status(201).send()
 }
