@@ -10,16 +10,17 @@ vi.mock('@/main/server.js', () => ({
 }))
 
 const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+const USER_EMAIL = 'user@gmail.com'
 
 describe('POST /variable-expenses', () => {
 	let app: ReturnType<typeof buildApp>
+	let token: string
 
 	beforeAll(async () => {
 		app = buildApp()
-		app.addHook('onRequest', async (request) => {
-			request.user = { sub: USER_ID }
-		})
 		await app.ready()
+
+		token = app.jwt.sign({ sub: USER_ID, email: USER_EMAIL })
 	})
 
 	afterAll(async () => {
@@ -31,6 +32,9 @@ describe('POST /variable-expenses', () => {
 			method: 'POST',
 			url: '/variable-expenses',
 			payload: { month: '2026-05', name: 'Coffee', amount: 10, category: 'food', necessary: false },
+			headers: {
+				authorization: `Bearer ${token}`
+			}
 		})
 
 		expect(response.statusCode).toBe(201)
@@ -41,6 +45,9 @@ describe('POST /variable-expenses', () => {
 			method: 'POST',
 			url: '/variable-expenses',
 			payload: { month: '2026-05', name: 'Coffee', amount: 10, category: 'food', necessary: false, date: '2026-05-01' },
+			headers: {
+				authorization: `Bearer ${token}`
+			}
 		})
 
 		expect(response.statusCode).toBe(201)

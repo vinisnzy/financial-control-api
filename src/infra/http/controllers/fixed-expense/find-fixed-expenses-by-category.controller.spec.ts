@@ -30,16 +30,17 @@ const fixedExpenseMock = {
 }
 
 const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+const USER_EMAIL = 'user@gmail.com'
 
 describe('GET /fixed-expenses/category/:category', () => {
 	let app: ReturnType<typeof buildApp>
+	let token: string
 
 	beforeAll(async () => {
 		app = buildApp()
-		app.addHook('onRequest', async (request) => {
-			request.user = { sub: USER_ID }
-		})
 		await app.ready()
+
+		token = app.jwt.sign({ sub: USER_ID, email: USER_EMAIL })
 	})
 
 	afterAll(async () => {
@@ -50,6 +51,9 @@ describe('GET /fixed-expenses/category/:category', () => {
 		const response = await app.inject({
 			method: 'GET',
 			url: '/fixed-expenses/category/food',
+			headers: {
+				authorization: `Bearer ${token}`
+			}
 		})
 
 		expect(response.statusCode).toBe(200)

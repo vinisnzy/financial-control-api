@@ -10,19 +10,20 @@ vi.mock('@/main/server.js', () => ({
 }))
 
 const USER_ID = '550e8400-e29b-41d4-a716-446655440000'
+const USER_EMAIL = 'user@gmail.com'
 
 describe('PUT /variable-expenses/:id', () => {
 	let app: ReturnType<typeof buildApp>
+	let token: string
 
 	const validId = '123e4567-e89b-12d3-a456-426614174000'
 	const validPayload = { month: '2026-05', name: 'Coffee', amount: 10, category: 'food', necessary: false }
 
 	beforeAll(async () => {
 		app = buildApp()
-		app.addHook('onRequest', async (request) => {
-			request.user = { sub: USER_ID }
-		})
 		await app.ready()
+
+		token = app.jwt.sign({ sub: USER_ID, email: USER_EMAIL })
 	})
 
 	afterAll(async () => {
@@ -34,6 +35,9 @@ describe('PUT /variable-expenses/:id', () => {
 			method: 'PUT',
 			url: `/variable-expenses/${validId}`,
 			payload: validPayload,
+			headers: {
+				authorization: `Bearer ${token}`
+			}
 		})
 
 		expect(response.statusCode).toBe(204)
