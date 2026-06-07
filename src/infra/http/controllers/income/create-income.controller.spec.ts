@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import { buildApp } from '@/main/app.js'
 
 // Mock do use case
-vi.mock('@/main/app.js', () => ({
+vi.mock('@/main/server.js', () => ({
 	container: {
 		createIncome: {
 			execute: vi.fn().mockResolvedValue(undefined),

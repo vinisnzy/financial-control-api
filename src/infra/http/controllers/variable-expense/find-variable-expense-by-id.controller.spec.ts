@@ -11,7 +11,7 @@ const variableExpenseMock = {
 	date: new Date('2026-05-01'),
 }
 
-vi.mock('@/main/app.js', () => ({
+vi.mock('@/main/server.js', () => ({
 	container: {
 		findVariableExpenseById: {
 			execute: vi
